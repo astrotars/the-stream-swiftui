@@ -2,14 +2,13 @@ import SwiftUI
 import GetStream
 import GetStreamActivityFeed
 
-struct BlueView: View {
-    var body: some View {
-        Color.blue
-    }
-}
-
 struct ContentView: View {
+    @State var username: String = ""
     @EnvironmentObject var account: Account
+    
+    func login() {
+        account.login(username)
+    }
     
     var body: some View {
         HStack() {
@@ -25,18 +24,21 @@ struct ContentView: View {
                             Image(systemName: "person.fill")
                             Text("Profile")
                     }
-                    BlueView()
-                        .tabItem {
-                            Image(systemName: "person.2.fill")
-                            Text("People")
-                    }
-                    
                 }
             } else {
-                BlueView()
+                VStack(alignment: .leading) {
+                    Text("Type a username to log in")
+                        .font(.headline)
+                    TextField("Type a username", text: $username, onCommit: login)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Button(action: login) { Text("Login") }
+                        .frame(maxWidth: .infinity, maxHeight: 35)
+                        .foregroundColor(Color.white)
+                        .background(Color.blue)
+                        .cornerRadius(5)
+                }.padding()
+                
             }
-        }.onAppear() {
-            self.account.login()
         }
     }
 }

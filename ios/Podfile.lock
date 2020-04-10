@@ -33,6 +33,7 @@ PODS:
   - Swime (3.0.6)
 
 DEPENDENCIES:
+  - Alamofire (~> 4.0)
   - GetStreamActivityFeed (~> 2.0)
 
 SPEC REPOS:
@@ -62,6 +63,6 @@ SPEC CHECKSUMS:
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   Swime: d7b2c277503b6cea317774aedc2dce05613f8b0b
 
-PODFILE CHECKSUM: 40c430263e311eeafa1a781fb266b5ec60a4df73
+PODFILE CHECKSUM: c60d2c56eb615018ed65079bc5052541e7db9a51
 
 COCOAPODS: 1.9.1

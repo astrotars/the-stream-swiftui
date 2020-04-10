@@ -1,0 +1,26 @@
+POST http://localhost:8080/v1/users
+Accept: application/json
+Content-Type: application/json
+
+{
+  "sender": "john"
+}
+
+###
+POST http://localhost:8080/v1/stream-feed-credentials
+Authorization: Bearer bizUnKitaJqXBEmE+ixqn+U+56zdWWo9OB6bHeR+1kE=
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+###
+POST http://localhost:8080/v1/stream-chat-credentials
+Authorization: Bearer AUcKt/V4lgLPGgIzkLyZQkABJRu+ZuN5W0yRvevcQnA=
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+###
+
