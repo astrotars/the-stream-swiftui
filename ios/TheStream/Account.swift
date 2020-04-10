@@ -5,13 +5,14 @@ import GetStreamActivityFeed
 import Alamofire
 
 final class Account: ObservableObject {
-    @Published var username: String = ""
+    @Published var user: String = ""
     
-    func login(_ username: String) {
+    func login(_ userToLogIn: String) {
+        
         Alamofire
             .request("https://399cf11e.ngrok.io/v1/users",
                      method: .post,
-                     parameters: ["user" : username],
+                     parameters: ["user" : userToLogIn],
                      encoding: JSONEncoding.default)
             .responseJSON { response in
                 print(response)
@@ -33,6 +34,6 @@ final class Account: ObservableObject {
     }
     
     var isLoggedIn: Bool {
-        !username.isEmpty
+        !user.isEmpty
     }
 }

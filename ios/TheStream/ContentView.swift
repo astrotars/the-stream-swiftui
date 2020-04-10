@@ -3,11 +3,11 @@ import GetStream
 import GetStreamActivityFeed
 
 struct ContentView: View {
-    @State var username: String = ""
+    @State var user: String = ""
     @EnvironmentObject var account: Account
     
     func login() {
-        account.login(username)
+        account.login(user)
     }
     
     var body: some View {
@@ -29,8 +29,10 @@ struct ContentView: View {
                 VStack(alignment: .leading) {
                     Text("Type a username to log in")
                         .font(.headline)
-                    TextField("Type a username", text: $username, onCommit: login)
+                    TextField("Type a username", text: $user, onCommit: login)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     Button(action: login) { Text("Login") }
                         .frame(maxWidth: .infinity, maxHeight: 35)
                         .foregroundColor(Color.white)

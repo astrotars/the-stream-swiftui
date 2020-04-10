@@ -3,7 +3,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "sender": "john"
+  "user": "john"
 }
 
 ###
