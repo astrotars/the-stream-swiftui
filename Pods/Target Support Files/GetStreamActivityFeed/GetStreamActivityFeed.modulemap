@@ -1,0 +1,6 @@
+framework module GetStreamActivityFeed {
+  umbrella header "GetStreamActivityFeed-umbrella.h"
+
+  export *
+  module * { export * }
+}

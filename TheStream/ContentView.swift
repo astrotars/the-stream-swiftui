@@ -1,16 +1,43 @@
-//
-//  ContentView.swift
-//  TheStream
-//
-//  Created by Jeff Taggart on 4/7/20.
-//  Copyright © 2020 Stream.io Inc. All rights reserved.
-//
-
 import SwiftUI
+import GetStream
+import GetStreamActivityFeed
+
+struct BlueView: View {
+    var body: some View {
+        Color.blue
+    }
+}
 
 struct ContentView: View {
+    @EnvironmentObject var account: Account
+    
     var body: some View {
-        Text("Hello, World!")
+        HStack() {
+            if account.isLoggedIn {
+                TabView {
+                    FeedView()
+                        .tabItem {
+                            Image(systemName: "list.dash")
+                            Text("Timeline")
+                    }
+                    ProfileView()
+                        .tabItem {
+                            Image(systemName: "person.fill")
+                            Text("Profile")
+                    }
+                    BlueView()
+                        .tabItem {
+                            Image(systemName: "person.2.fill")
+                            Text("People")
+                    }
+                    
+                }
+            } else {
+                BlueView()
+            }
+        }.onAppear() {
+            self.account.login()
+        }
     }
 }
 

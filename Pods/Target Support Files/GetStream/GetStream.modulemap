@@ -1,0 +1,6 @@
+framework module GetStream {
+  umbrella header "GetStream-umbrella.h"
+
+  export *
+  module * { export * }
+}

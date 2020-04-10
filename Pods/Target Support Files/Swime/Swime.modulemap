@@ -1,0 +1,6 @@
+framework module Swime {
+  umbrella header "Swime-umbrella.h"
+
+  export *
+  module * { export * }
+}
