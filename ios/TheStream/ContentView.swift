@@ -24,6 +24,11 @@ struct ContentView: View {
                         Image(systemName: "person.fill")
                         Text("Profile")
                 }
+                PeopleView()
+                    .tabItem {
+                        Image(systemName: "person.2.fill")
+                        Text("People")
+                }
             }
         } else {
             VStack(alignment: .leading) {

@@ -4,7 +4,16 @@ import GetStream
 import GetStreamActivityFeed
 import Alamofire
 
+typealias FeedCompletion = (_ result: [FeedItem]) -> Void
+typealias CreateFeedItemCompletion = () -> Void
+typealias UsersCompletion = (_ result: [String]) -> Void
+
 final class Account: ObservableObject {
+    enum FeedType {
+        case profile
+        case timeline
+    }
+    
     @Published var user: String?
     @Published var isAuthed: Bool = false
     @Published var timelineItems: [FeedItem] = []
@@ -33,23 +42,38 @@ final class Account: ObservableObject {
         }
     }
     
-    func fetchProfileFeed() {
-        userFeed?.get(typeOf: FeedItem.self, pagination: .limit(50)) { [weak self] r in
-            self?.profileItems = try! r.get().results
+    func fetchFeed(_ feedType: FeedType, completion: @escaping FeedCompletion) {
+        let feed: FlatFeed = {
+            switch(feedType) {
+            case .profile:
+                return userFeed!
+            case .timeline:
+                return timelineFeed!
+            }
+        }()
+        
+        feed.get(typeOf: FeedItem.self, pagination: .limit(50)) { r in
+            completion(try! r.get().results)
         }
     }
     
-    func fetchTimelineFeed() {
-        timelineFeed?.get(typeOf: FeedItem.self, pagination: .limit(50)) { [weak self] r in
-            self?.timelineItems = try! r.get().results
-        }
-    }
-    
-    func createFeedItem(_ message: String) {
+    func createFeedItem(_ message: String, completion: @escaping CreateFeedItemCompletion) {
         let activity = FeedItem(actor: User(id: self.user!), verb: "post", object: UUID().uuidString, message: message)
         
-        userFeed?.add(activity) { [weak self] result in
-            self?.fetchProfileFeed()
+        userFeed?.add(activity) { result in
+            completion()
+        }
+    }
+    
+    func fetchUsers(completion: @escaping UsersCompletion) {
+        Alamofire
+            .request("https://cb72f977.ngrok.io/v1/users",
+                     method: .get,
+                     headers: ["Authorization" : "Bearer \(authToken!)"])
+            .responseJSON { response in
+                let body = response.value as! NSDictionary
+                let users = body["users"]! as! [String]
+                completion(users)
         }
     }
     

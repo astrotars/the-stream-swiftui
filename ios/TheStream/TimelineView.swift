@@ -1,14 +1,7 @@
-//
-//  TimelineView.swift
-//  TheStream
-//
-//  Created by Jeff Taggart on 4/13/20.
-//  Copyright © 2020 Stream.io Inc. All rights reserved.
-//
-
 import SwiftUI
 
 struct TimelineView: View {
+    @State var items: [FeedItem] = []
     @EnvironmentObject var account: Account
     
     var body: some View {
@@ -17,7 +10,9 @@ struct TimelineView: View {
     }
     
     private func fetch() {
-        account.fetchTimelineFeed()
+        account.fetchFeed(.timeline) { items in
+            self.items = items
+        }
     }
 }
 
