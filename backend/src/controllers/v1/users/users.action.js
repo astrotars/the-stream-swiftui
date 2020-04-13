@@ -19,7 +19,7 @@ exports.requireAuthHeader = (req, res, next) => {
 
   if (!usersStorage.has(userToken)) res.status(401).send('Unauthorized');
 
-  req.user = { user: usersStorage.get(userToken) };
+  req.user = usersStorage.get(userToken);
   next();
 };
 

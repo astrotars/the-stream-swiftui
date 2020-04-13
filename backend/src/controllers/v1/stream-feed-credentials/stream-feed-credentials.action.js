@@ -11,8 +11,8 @@ exports.streamFeedCredentials = async (req, res) => {
 
     const client = stream.connect(apiKey, apiSecret, appId);
 
-    await client.user(req.user.sender).getOrCreate({ name: req.user.sender });
-    const token = client.createUserToken(req.user.sender);
+    await client.user(req.user).getOrCreate({ name: req.user });
+    const token = client.createUserToken(req.user);
 
     res.status(200).json({ token, apiKey, appId });
   } catch (error) {

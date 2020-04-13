@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         HStack() {
-            if account.isLoggedIn {
+            if account.isAuthed {
                 TabView {
                     FeedView()
                         .tabItem {

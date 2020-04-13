@@ -4,8 +4,10 @@ import GetStream
 import GetStreamActivityFeed
 
 struct FeedView: View {
+    @EnvironmentObject var account: Account
+    
     var body: some View {
-        Text("hello")
+        Text("hello, \(account.user!)")
     }
 }
 
