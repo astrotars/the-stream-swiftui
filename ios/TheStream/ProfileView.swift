@@ -1,16 +1,28 @@
-//
-//  ProfileView.swift
-//  TheStream
-//
-//  Created by Jeff Taggart on 4/10/20.
-//  Copyright © 2020 Stream.io Inc. All rights reserved.
-//
-
 import SwiftUI
 
 struct ProfileView: View {
+    @State var message: String = ""
+    @EnvironmentObject var account: Account
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack() {
+            HStack() {
+                TextField("Say something...", text: $message, onCommit: createFeedItem)
+                Button(action: createFeedItem) { Text("Send") }
+            }.padding()
+            
+            FeedView(items: account.profileItems)
+                .onAppear(perform: fetch)
+        }
+    }
+    
+    private func createFeedItem() {
+        account.createFeedItem(message)
+        message = ""
+    }
+    
+    private func fetch() {
+        account.fetchProfileFeed()
     }
 }
 

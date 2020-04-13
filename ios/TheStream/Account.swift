@@ -7,8 +7,13 @@ import Alamofire
 final class Account: ObservableObject {
     @Published var user: String?
     @Published var isAuthed: Bool = false
+    @Published var timelineItems: [FeedItem] = []
+    @Published var profileItems: [FeedItem] = []
+    
     var authToken: String?
     var feedToken: String?
+    var userFeed: FlatFeed?
+    var timelineFeed: FlatFeed?
     
     func login(_ userToLogIn: String) {
         Alamofire
@@ -28,7 +33,27 @@ final class Account: ObservableObject {
         }
     }
     
-    func setupFeed() {
+    func fetchProfileFeed() {
+        userFeed?.get(typeOf: FeedItem.self, pagination: .limit(50)) { [weak self] r in
+            self?.profileItems = try! r.get().results
+        }
+    }
+    
+    func fetchTimelineFeed() {
+        timelineFeed?.get(typeOf: FeedItem.self, pagination: .limit(50)) { [weak self] r in
+            self?.timelineItems = try! r.get().results
+        }
+    }
+    
+    func createFeedItem(_ message: String) {
+        let activity = FeedItem(actor: User(id: self.user!), verb: "post", object: UUID().uuidString, message: message)
+        
+        userFeed?.add(activity) { [weak self] result in
+            self?.fetchProfileFeed()
+        }
+    }
+    
+    private func setupFeed() {
         Alamofire
             .request("https://cb72f977.ngrok.io/v1/stream-feed-credentials",
                      method: .post,
@@ -51,6 +76,8 @@ final class Account: ObservableObject {
                         token: feedToken
                     ) { [weak self] (result) in
                         self?.isAuthed = true
+                        self?.userFeed = Client.shared.flatFeed(feedSlug: "user")
+                        self?.timelineFeed = Client.shared.flatFeed(feedSlug: "timeline")
                     }
                 }
         }
