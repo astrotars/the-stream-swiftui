@@ -16,17 +16,16 @@ final class Account: ObservableObject {
     
     @Published var user: String?
     @Published var isAuthed: Bool = false
-    @Published var timelineItems: [FeedItem] = []
-    @Published var profileItems: [FeedItem] = []
     
-    var authToken: String?
-    var feedToken: String?
-    var userFeed: FlatFeed?
-    var timelineFeed: FlatFeed?
+    private let apiRoot = "https://5c1c5c42.ngrok.io"
+    private var authToken: String!
+    private var feedToken: String!
+    private var userFeed: FlatFeed!
+    private var timelineFeed: FlatFeed!
     
     func login(_ userToLogIn: String) {
         Alamofire
-            .request("https://cb72f977.ngrok.io/v1/users",
+            .request("\(apiRoot)/v1/users",
                      method: .post,
                      parameters: ["user" : userToLogIn],
                      encoding: JSONEncoding.default)
@@ -46,9 +45,9 @@ final class Account: ObservableObject {
         let feed: FlatFeed = {
             switch(feedType) {
             case .profile:
-                return userFeed!
+                return userFeed
             case .timeline:
-                return timelineFeed!
+                return timelineFeed
             }
         }()
         
@@ -67,7 +66,7 @@ final class Account: ObservableObject {
     
     func fetchUsers(completion: @escaping UsersCompletion) {
         Alamofire
-            .request("https://cb72f977.ngrok.io/v1/users",
+            .request("\(apiRoot)/v1/users",
                      method: .get,
                      headers: ["Authorization" : "Bearer \(authToken!)"])
             .responseJSON { response in
@@ -77,9 +76,17 @@ final class Account: ObservableObject {
         }
     }
     
+    func follow(_ user: String, completion: @escaping () -> Void) {
+        timelineFeed.follow(
+            toTarget: Client.shared.flatFeed(feedSlug: "user", userId: user).feedId
+        ) { result in
+            completion()
+        }
+    }
+    
     private func setupFeed() {
         Alamofire
-            .request("https://cb72f977.ngrok.io/v1/stream-feed-credentials",
+            .request("\(apiRoot)/v1/stream-feed-credentials",
                      method: .post,
                      headers: ["Authorization" : "Bearer \(authToken!)"])
             .responseJSON { [weak self] response in

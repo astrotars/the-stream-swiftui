@@ -5,12 +5,13 @@ struct TimelineView: View {
     @EnvironmentObject var account: Account
     
     var body: some View {
-        FeedView(items: account.timelineItems)
+        FeedView(items: items)
             .onAppear(perform: fetch)
     }
     
     private func fetch() {
         account.fetchFeed(.timeline) { items in
+            print(items)
             self.items = items
         }
     }
