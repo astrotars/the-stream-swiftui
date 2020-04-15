@@ -11,7 +11,6 @@ struct TimelineView: View {
     
     private func fetch() {
         account.fetchFeed(.timeline) { items in
-            print(items)
             self.items = items
         }
     }

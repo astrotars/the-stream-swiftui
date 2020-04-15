@@ -17,11 +17,11 @@ final class Account: ObservableObject {
     @Published var user: String?
     @Published var isAuthed: Bool = false
     
-    private let apiRoot = "https://5c1c5c42.ngrok.io"
-    private var authToken: String!
-    private var feedToken: String!
-    private var userFeed: FlatFeed!
-    private var timelineFeed: FlatFeed!
+    private let apiRoot = "https://80fbac88.ngrok.io"
+    private var authToken: String?
+    private var feedToken: String?
+    private var userFeed: FlatFeed?
+    private var timelineFeed: FlatFeed?
     
     func login(_ userToLogIn: String) {
         Alamofire
@@ -45,9 +45,9 @@ final class Account: ObservableObject {
         let feed: FlatFeed = {
             switch(feedType) {
             case .profile:
-                return userFeed
+                return userFeed!
             case .timeline:
-                return timelineFeed
+                return timelineFeed!
             }
         }()
         
@@ -77,7 +77,7 @@ final class Account: ObservableObject {
     }
     
     func follow(_ user: String, completion: @escaping () -> Void) {
-        timelineFeed.follow(
+        timelineFeed!.follow(
             toTarget: Client.shared.flatFeed(feedSlug: "user", userId: user).feedId
         ) { result in
             completion()
