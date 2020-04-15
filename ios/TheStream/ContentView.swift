@@ -3,7 +3,8 @@ import GetStream
 import GetStreamActivityFeed
 
 struct ContentView: View {
-    @State var user: String = ""
+    @State var user = ""
+    @State var selection = 1
     @EnvironmentObject var account: Account
     
     func login() {
@@ -13,22 +14,25 @@ struct ContentView: View {
     @ViewBuilder
     var body: some View {
         if account.isAuthed {
-            TabView {
-                TimelineView()
-                    .tabItem {
-                        Image(systemName: "list.dash")
-                        Text("Timeline")
+            NavigationView {
+                TabView {
+                    TimelineView()
+                        .tabItem {
+                            Image(systemName: "list.dash")
+                            Text("Timeline")
+                    }
+                    ProfileView()
+                        .tabItem {
+                            Image(systemName: "person.fill")
+                            Text("Profile")
+                    }
+                    PeopleView()
+                        .tabItem {
+                            Image(systemName: "person.2.fill")
+                            Text("People")
+                    }
                 }
-                ProfileView()
-                    .tabItem {
-                        Image(systemName: "person.fill")
-                        Text("Profile")
-                }
-                PeopleView()
-                    .tabItem {
-                        Image(systemName: "person.2.fill")
-                        Text("People")
-                }
+                .navigationBarTitle("TheStream", displayMode: .inline)
             }
         } else {
             VStack(alignment: .leading) {
