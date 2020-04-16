@@ -31,6 +31,11 @@ struct ContentView: View {
                             Image(systemName: "person.2.fill")
                             Text("People")
                     }
+                    ChannelsView()
+                        .tabItem {
+                            Image(systemName: "grid.circle")
+                            Text("Channels")
+                    }
                 }
                 .navigationBarTitle("TheStream", displayMode: .inline)
             }

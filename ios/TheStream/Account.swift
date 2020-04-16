@@ -5,10 +5,6 @@ import GetStreamActivityFeed
 import StreamChatClient
 import Alamofire
 
-typealias FeedCompletion = (_ result: [FeedItem]) -> Void
-typealias CreateFeedItemCompletion = () -> Void
-typealias UsersCompletion = (_ result: [String]) -> Void
-
 final class Account: ObservableObject {
     enum FeedType {
         case profile
@@ -42,7 +38,7 @@ final class Account: ObservableObject {
         }
     }
     
-    func fetchFeed(_ feedType: FeedType, completion: @escaping FeedCompletion) {
+    func fetchFeed(_ feedType: FeedType, completion: @escaping (_ result: [FeedItem]) -> Void) {
         let feed: FlatFeed = {
             switch(feedType) {
             case .profile:
@@ -57,7 +53,7 @@ final class Account: ObservableObject {
         }
     }
     
-    func createFeedItem(_ message: String, completion: @escaping CreateFeedItemCompletion) {
+    func createFeedItem(_ message: String, completion: @escaping () -> Void) {
         let activity = FeedItem(actor: User(id: self.user!), verb: "post", object: UUID().uuidString, message: message)
         
         userFeed?.add(activity) { result in
@@ -65,7 +61,7 @@ final class Account: ObservableObject {
         }
     }
     
-    func fetchUsers(completion: @escaping UsersCompletion) {
+    func fetchUsers(completion: @escaping (_ result: [String]) -> Void) {
         Alamofire
             .request("\(apiRoot)/v1/users",
                 method: .get,
@@ -85,12 +81,29 @@ final class Account: ObservableObject {
         }
     }
     
-    func createPrivateChannel(_ users: [String], completion: @escaping (Channel) -> ()) {
+    func createPrivateChannel(_ users: [String], completion: @escaping (Channel) -> Void) {
         let channelId = users.sorted().joined(separator: "-")
         let channel = StreamChatClient.Client.shared.channel(
             type: .messaging,
             id: channelId,
             members: users.map { StreamChatClient.User(id: $0) }
+        )
+        
+        channel.create { (result) in
+            completion(try! result.get().channel)
+        }
+    }
+    
+    func createPublicChannel(_ name: String, completion: @escaping (Channel) -> Void) {
+        let id = name
+            .lowercased()
+            .components(separatedBy: .whitespaces)
+            .joined(separator: "-")
+        
+        let channel = StreamChatClient.Client.shared.channel(
+            type: .livestream,
+            id: id,
+            extraData: ChannelExtraData(name: name, imageURL: URL(string: "https://robohash.org/\(id).png"))
         )
         
         channel.create { (result) in
