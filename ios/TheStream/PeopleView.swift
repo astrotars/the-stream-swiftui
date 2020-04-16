@@ -2,10 +2,10 @@ import SwiftUI
 import GetStream
 
 struct PeopleView: View {
+    @EnvironmentObject var account: Account
     @State var users: [String] = []
     @State var showFollowedAlert: Bool = false
     @State var tag: Int? = nil
-    @EnvironmentObject var account: Account
     
     var body: some View {
         List {

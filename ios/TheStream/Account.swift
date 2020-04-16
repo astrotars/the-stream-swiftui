@@ -85,6 +85,19 @@ final class Account: ObservableObject {
         }
     }
     
+    func createPrivateChannel(_ users: [String], completion: @escaping (Channel) -> ()) {
+        let channelId = users.sorted().joined(separator: "-")
+        let channel = StreamChatClient.Client.shared.channel(
+            type: .messaging,
+            id: channelId,
+            members: users.map { StreamChatClient.User(id: $0) }
+        )
+        
+        channel.create { (result) in
+            completion(try! result.get().channel)
+        }
+    }
+    
     private func setupFeed() {
         Alamofire
             .request("\(apiRoot)/v1/stream-feed-credentials",
@@ -98,7 +111,7 @@ final class Account: ObservableObject {
                 
                 if let user = self?.user {
                     GetStream.Client.config = .init(apiKey: apiKey,
-                                          appId: appId)
+                                                    appId: appId)
                     
                     
                     GetStream.Client.shared.setupUser(

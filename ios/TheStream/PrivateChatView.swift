@@ -7,6 +7,7 @@ struct PrivateChatView: View {
     var user: String
     var withUser: String
 
+    @EnvironmentObject var account: Account
     @State var channelPresenter: ChannelPresenter?
     
     @ViewBuilder
@@ -19,13 +20,9 @@ struct PrivateChatView: View {
     }
     
     private func loadChannel() {
-        let users = [user, withUser]
-        let channelId = users.sorted().joined(separator: "-")
-        let channel = Client.shared.channel(type: .messaging, id: channelId, members: users.map { User(id: $0) } )
-        
-        channel.create { (result) in
+        account.createPrivateChannel([user, withUser]) { channel in
             self.channelPresenter = ChannelPresenter(
-                channel: try! result.get().channel
+                channel: channel
             )
         }
     }
