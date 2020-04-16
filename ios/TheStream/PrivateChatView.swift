@@ -12,15 +12,16 @@ struct PrivateChatView: View {
     @ViewBuilder
     var body: some View {
         if (channelPresenter == nil) {
-            Text("loading...").onAppear(perform: loadChannel)
+            Text("Loading...").onAppear(perform: loadChannel)
         } else {
-            StreamChatView(channelPresenter: channelPresenter!)
+            StreamChatView(channelPresenter: channelPresenter!).navigationBarTitle("Chat w/ \(withUser)")
         }
     }
     
     private func loadChannel() {
-        let channelId = [user, withUser].sorted().joined(separator: "-")
-        let channel = Client.shared.channel(type: .messaging, id: channelId)
+        let users = [user, withUser]
+        let channelId = users.sorted().joined(separator: "-")
+        let channel = Client.shared.channel(type: .messaging, id: channelId, members: users.map { User(id: $0) } )
         
         channel.create { (result) in
             self.channelPresenter = ChannelPresenter(
