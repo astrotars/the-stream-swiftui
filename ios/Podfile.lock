@@ -16,25 +16,52 @@ PODS:
     - Nuke (~> 8.1)
     - Reusable (~> 4.1)
     - SnapKit (~> 5.0)
+  - GzipSwift (5.1.1)
   - Moya (13.0.1):
     - Moya/Core (= 13.0.1)
   - Moya/Core (13.0.1):
     - Alamofire (~> 4.1)
     - Result (~> 4.1)
   - Nuke (8.4.1)
+  - ReachabilitySwift (5.0.0)
   - Result (4.1.0)
   - Reusable (4.1.1):
     - Reusable/Storyboard (= 4.1.1)
     - Reusable/View (= 4.1.1)
   - Reusable/Storyboard (4.1.1)
   - Reusable/View (4.1.1)
+  - RxCocoa (5.1.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxGesture (3.0.2):
+    - RxCocoa (~> 5.1)
+    - RxSwift (~> 5.1)
+  - RxRelay (5.1.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.1)
   - SnapKit (5.0.1)
   - Starscream (3.1.1)
+  - StreamChat (2.0.1):
+    - Nuke (~> 8.4)
+    - RxGesture (~> 3.0)
+    - SnapKit (~> 5.0)
+    - StreamChatCore
+    - SwiftyGif (~> 5.2.0)
+  - StreamChatClient (2.0.1):
+    - GzipSwift (~> 5.1)
+    - ReachabilitySwift (~> 5.0)
+    - Starscream (~> 3.1)
+  - StreamChatCore (2.0.1):
+    - RxCocoa (~> 5.1)
+    - RxSwift (~> 5.1)
+    - StreamChatClient
+  - SwiftyGif (5.2.0)
   - Swime (3.0.6)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - GetStreamActivityFeed (~> 2.0)
+  - StreamChat (~> 2.0)
 
 SPEC REPOS:
   trunk:
@@ -42,12 +69,22 @@ SPEC REPOS:
     - Faye
     - GetStream
     - GetStreamActivityFeed
+    - GzipSwift
     - Moya
     - Nuke
+    - ReachabilitySwift
     - Result
     - Reusable
+    - RxCocoa
+    - RxGesture
+    - RxRelay
+    - RxSwift
     - SnapKit
     - Starscream
+    - StreamChat
+    - StreamChatClient
+    - StreamChatCore
+    - SwiftyGif
     - Swime
 
 SPEC CHECKSUMS:
@@ -55,14 +92,24 @@ SPEC CHECKSUMS:
   Faye: be7f08638a7c27da87714716ab5bfc970d4eda6d
   GetStream: 92654c26e0d954b22d1de0ef36606197d4f2cb97
   GetStreamActivityFeed: 0a06245fec2ca75ba36c95e7ccef265793ee64e0
+  GzipSwift: 893f3e48e597a1a4f62fafcb6514220fcf8287fa
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   Nuke: d780e3507a86b86c589ab3cc5cd302d5456f06fb
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxGesture: d6bd7447ca3a596c7a9702a6a2b6a2bb5d8bae54
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
+  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+  StreamChat: b51631f5cf0e85edd313086880136e581f9800d2
+  StreamChatClient: 91b0f585e7dc92ade58e657daffafb16d485b2a6
+  StreamChatCore: 37ce6d81f92bd893c9e242e4090f3f6a69d1ab00
+  SwiftyGif: b85c6b33a9411859d9e1db998b6a8214aea942df
   Swime: d7b2c277503b6cea317774aedc2dce05613f8b0b
 
-PODFILE CHECKSUM: c60d2c56eb615018ed65079bc5052541e7db9a51
+PODFILE CHECKSUM: d04e976b1276613d417b5fb6159a2948bfcdc11c
 
 COCOAPODS: 1.9.1

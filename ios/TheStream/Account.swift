@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 import GetStream
 import GetStreamActivityFeed
+import StreamChatClient
 import Alamofire
 
 typealias FeedCompletion = (_ result: [FeedItem]) -> Void
@@ -17,7 +18,7 @@ final class Account: ObservableObject {
     @Published var user: String?
     @Published var isAuthed: Bool = false
     
-    private let apiRoot = "https://80fbac88.ngrok.io"
+    private let apiRoot = "https://5205997a.ngrok.io"
     private var authToken: String?
     private var feedToken: String?
     private var userFeed: FlatFeed?
@@ -26,9 +27,9 @@ final class Account: ObservableObject {
     func login(_ userToLogIn: String) {
         Alamofire
             .request("\(apiRoot)/v1/users",
-                     method: .post,
-                     parameters: ["user" : userToLogIn],
-                     encoding: JSONEncoding.default)
+                method: .post,
+                parameters: ["user" : userToLogIn],
+                encoding: JSONEncoding.default)
             .responseJSON { [weak self] response in
                 print(response)
                 let body = response.value as! NSDictionary
@@ -67,8 +68,8 @@ final class Account: ObservableObject {
     func fetchUsers(completion: @escaping UsersCompletion) {
         Alamofire
             .request("\(apiRoot)/v1/users",
-                     method: .get,
-                     headers: ["Authorization" : "Bearer \(authToken!)"])
+                method: .get,
+                headers: ["Authorization" : "Bearer \(authToken!)"])
             .responseJSON { response in
                 let body = response.value as! NSDictionary
                 let users = body["users"]! as! [String]
@@ -87,31 +88,52 @@ final class Account: ObservableObject {
     private func setupFeed() {
         Alamofire
             .request("\(apiRoot)/v1/stream-feed-credentials",
-                     method: .post,
-                     headers: ["Authorization" : "Bearer \(authToken!)"])
+                method: .post,
+                headers: ["Authorization" : "Bearer \(authToken!)"])
             .responseJSON { [weak self] response in
-                print(response)
                 let body = response.value as! NSDictionary
                 let feedToken = body["token"]! as! String
                 let appId = body["appId"] as! String
                 let apiKey = body["apiKey"] as! String
                 
                 if let user = self?.user {
-                    Client.config = .init(apiKey: apiKey,
+                    GetStream.Client.config = .init(apiKey: apiKey,
                                           appId: appId)
                     
                     
-                    Client.shared.setupUser(
+                    GetStream.Client.shared.setupUser(
                         GetStreamActivityFeed.User(name: user,
                                                    id: user),
                         token: feedToken
                     ) { [weak self] (result) in
-                        self?.isAuthed = true
                         self?.userFeed = Client.shared.flatFeed(feedSlug: "user")
                         self?.timelineFeed = Client.shared.flatFeed(feedSlug: "timeline")
+                        
+                        self?.setupChat()
                     }
                 }
         }
     }
     
+    private func setupChat() {
+        Alamofire
+            .request("\(apiRoot)/v1/stream-chat-credentials",
+                method: .post,
+                headers: ["Authorization" : "Bearer \(authToken!)"])
+            .responseJSON { [weak self] response in
+                print(response)
+                let body = response.value as! NSDictionary
+                let chatToken = body["token"]! as! String
+                let apiKey = body["apiKey"] as! String
+                
+                if let user = self?.user {
+                    StreamChatClient.Client.config = .init(apiKey: apiKey, logOptions: .info)
+                    StreamChatClient.Client.shared.set(
+                        user: StreamChatClient.User(id: user),
+                        token: chatToken
+                    )
+                    self?.isAuthed = true
+                }
+        }
+    }
 }

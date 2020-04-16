@@ -1,0 +1,6 @@
+framework module StreamChatCore {
+  umbrella header "StreamChatCore-umbrella.h"
+
+  export *
+  module * { export * }
+}

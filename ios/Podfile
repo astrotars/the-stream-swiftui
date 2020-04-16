@@ -4,5 +4,6 @@ target 'TheStream' do
   use_frameworks!
 
   pod 'GetStreamActivityFeed', '~> 2.0'
+  pod 'StreamChat', '~> 2.0'
   pod 'Alamofire', '~> 4.0'
 end

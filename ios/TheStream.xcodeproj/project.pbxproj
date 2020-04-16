@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		25E9CFAC535D9D396E3567C6 /* Pods_TheStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A684E78AA6302711590C9D0C /* Pods_TheStream.framework */; };
+		F158311C2448C47F004D017B /* PrivateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F158311B2448C47F004D017B /* PrivateChatView.swift */; };
 		F17460DD2440EC340039684C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17460DC2440EC340039684C /* ProfileView.swift */; };
 		F17460DF2440ECE50039684C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17460DE2440ECE50039684C /* Account.swift */; };
 		F1A860CF2444CA820089038E /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A860CE2444CA820089038E /* FeedItem.swift */; };
@@ -26,6 +27,7 @@
 		9C2F781C6F32C0D024D75E34 /* Pods-TheStream.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheStream.release.xcconfig"; path = "Target Support Files/Pods-TheStream/Pods-TheStream.release.xcconfig"; sourceTree = "<group>"; };
 		A684E78AA6302711590C9D0C /* Pods_TheStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B87368986132A7A04AA78A52 /* Pods-TheStream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheStream.debug.xcconfig"; path = "Target Support Files/Pods-TheStream/Pods-TheStream.debug.xcconfig"; sourceTree = "<group>"; };
+		F158311B2448C47F004D017B /* PrivateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatView.swift; sourceTree = "<group>"; };
 		F17460DC2440EC340039684C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		F17460DE2440ECE50039684C /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		F1A860CE2444CA820089038E /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				F17460DC2440EC340039684C /* ProfileView.swift */,
 				F1A860D02444D3C80089038E /* TimelineView.swift */,
 				F1A860D22444E0950089038E /* PeopleView.swift */,
+				F158311B2448C47F004D017B /* PrivateChatView.swift */,
 				F17460DE2440ECE50039684C /* Account.swift */,
 				F1A860CE2444CA820089038E /* FeedItem.swift */,
 				F1AD2CFA243CF4FE00C0840B /* Assets.xcassets */,
@@ -235,6 +238,7 @@
 				F1B984F4243D159B001BCC5B /* FeedView.swift in Sources */,
 				F1AD2CF5243CF4FE00C0840B /* AppDelegate.swift in Sources */,
 				F1A860D32444E0950089038E /* PeopleView.swift in Sources */,
+				F158311C2448C47F004D017B /* PrivateChatView.swift in Sources */,
 				F17460DD2440EC340039684C /* ProfileView.swift in Sources */,
 				F1AD2CF7243CF4FE00C0840B /* SceneDelegate.swift in Sources */,
 				F1AD2CF9243CF4FE00C0840B /* ContentView.swift in Sources */,

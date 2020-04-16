@@ -12,18 +12,17 @@ struct PeopleView: View {
             ForEach(users.indices, id: \.self) { i in
                 HStack() {
                     Text(self.users[i])
-                    NavigationLink(destination: Text("Hello, \(self.users[i])").navigationBarTitle("Chat"), tag: i, selection: self.$tag) {
-                        Spacer()
+                    NavigationLink(destination: PrivateChatView(user: self.account.user!, withUser: self.users[i]), tag: i, selection: self.$tag) {
+                        EmptyView()
+                    }
+                    Image(systemName: "message").onTapGesture {
+                        self.tag = i
                     }
                     Image(systemName: "plus.circle").onTapGesture {
                         self.account.follow(self.users[i]) {
                             self.showFollowedAlert = true
                         }
                     }
-                    Image(systemName: "message").onTapGesture {
-                        self.tag = i
-                    }
-
                 }
             }
         }
