@@ -1,6 +1,0 @@
-framework module Faye {
-  umbrella header "Faye-umbrella.h"
-
-  export *
-  module * { export * }
-}
