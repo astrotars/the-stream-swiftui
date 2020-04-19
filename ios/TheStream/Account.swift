@@ -2,7 +2,6 @@ import SwiftUI
 import Combine
 import GetStream
 import GetStreamActivityFeed
-import StreamChatClient
 import Alamofire
 
 final class Account: ObservableObject {
@@ -81,36 +80,6 @@ final class Account: ObservableObject {
         }
     }
     
-    func createPrivateChannel(_ users: [String], completion: @escaping (Channel) -> Void) {
-        let channelId = users.sorted().joined(separator: "-")
-        let channel = StreamChatClient.Client.shared.channel(
-            type: .messaging,
-            id: channelId,
-            members: users.map { StreamChatClient.User(id: $0) }
-        )
-        
-        channel.create { (result) in
-            completion(try! result.get().channel)
-        }
-    }
-    
-    func createPublicChannel(_ name: String, completion: @escaping (Channel) -> Void) {
-        let id = name
-            .lowercased()
-            .components(separatedBy: .whitespaces)
-            .joined(separator: "-")
-        
-        let channel = StreamChatClient.Client.shared.channel(
-            type: .livestream,
-            id: id,
-            extraData: ChannelExtraData(name: name, imageURL: URL(string: "https://robohash.org/\(id).png"))
-        )
-        
-        channel.create { (result) in
-            completion(try! result.get().channel)
-        }
-    }
-    
     private func setupFeed() {
         Alamofire
             .request("\(apiRoot)/v1/stream-feed-credentials",
@@ -135,30 +104,8 @@ final class Account: ObservableObject {
                         self?.userFeed = Client.shared.flatFeed(feedSlug: "user")
                         self?.timelineFeed = Client.shared.flatFeed(feedSlug: "timeline")
                         
-                        self?.setupChat()
+                        self?.isAuthed = true
                     }
-                }
-        }
-    }
-    
-    private func setupChat() {
-        Alamofire
-            .request("\(apiRoot)/v1/stream-chat-credentials",
-                method: .post,
-                headers: ["Authorization" : "Bearer \(authToken!)"])
-            .responseJSON { [weak self] response in
-                print(response)
-                let body = response.value as! NSDictionary
-                let chatToken = body["token"]! as! String
-                let apiKey = body["apiKey"] as! String
-                
-                if let user = self?.user {
-                    StreamChatClient.Client.config = .init(apiKey: apiKey, logOptions: .info)
-                    StreamChatClient.Client.shared.set(
-                        user: StreamChatClient.User(id: user),
-                        token: chatToken
-                    )
-                    self?.isAuthed = true
                 }
         }
     }

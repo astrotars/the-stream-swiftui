@@ -1,5 +1,4 @@
 import SwiftUI
-import GetStream
 
 struct PeopleView: View {
     @EnvironmentObject var account: Account
@@ -12,12 +11,7 @@ struct PeopleView: View {
             ForEach(users.indices, id: \.self) { i in
                 HStack() {
                     Text(self.users[i])
-                    NavigationLink(destination: PrivateChatView(user: self.account.user!, withUser: self.users[i]), tag: i, selection: self.$tag) {
-                        EmptyView()
-                    }
-                    Image(systemName: "message").onTapGesture {
-                        self.tag = i
-                    }
+                    Spacer()
                     Image(systemName: "plus.circle").onTapGesture {
                         self.account.follow(self.users[i]) {
                             self.showFollowedAlert = true

@@ -1,10 +1,7 @@
 import SwiftUI
-import GetStream
-import GetStreamActivityFeed
 
 struct ContentView: View {
     @State var user = ""
-    @State var selection = 1
     @EnvironmentObject var account: Account
     
     func login() {
@@ -30,11 +27,6 @@ struct ContentView: View {
                         .tabItem {
                             Image(systemName: "person.2.fill")
                             Text("People")
-                    }
-                    ChannelsView()
-                        .tabItem {
-                            Image(systemName: "grid.circle")
-                            Text("Channels")
                     }
                 }
                 .navigationBarTitle("TheStream", displayMode: .inline)
