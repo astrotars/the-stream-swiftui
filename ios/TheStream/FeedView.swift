@@ -1,7 +1,4 @@
 import SwiftUI
-import MapKit
-import GetStream
-import GetStreamActivityFeed
 
 struct FeedRow: View {
     var item: FeedItem

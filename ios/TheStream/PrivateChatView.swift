@@ -1,7 +1,6 @@
 import SwiftUI
 import StreamChat
 import StreamChatCore
-import StreamChatClient
 
 struct PrivateChatView: View {
     var user: String

@@ -1,11 +1,3 @@
-//
-//  SceneDelegate.swift
-//  TheStream
-//
-//  Created by Jeff Taggart on 4/7/20.
-//  Copyright © 2020 Stream.io Inc. All rights reserved.
-//
-
 import UIKit
 import SwiftUI
 

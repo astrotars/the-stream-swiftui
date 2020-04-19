@@ -1,5 +1,4 @@
 import SwiftUI
-import GetStream
 
 struct PeopleView: View {
     @EnvironmentObject var account: Account

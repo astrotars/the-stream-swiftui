@@ -1,10 +1,7 @@
 import SwiftUI
-import GetStream
-import GetStreamActivityFeed
 
 struct ContentView: View {
     @State var user = ""
-    @State var selection = 1
     @EnvironmentObject var account: Account
     
     func login() {

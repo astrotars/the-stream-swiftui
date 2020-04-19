@@ -1,6 +1,6 @@
 import SwiftUI
-import StreamChatCore
 import StreamChat
+import StreamChatCore
 
 struct ChannelsView: View {
     @EnvironmentObject var account: Account
