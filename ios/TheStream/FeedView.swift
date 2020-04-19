@@ -3,6 +3,18 @@ import MapKit
 import GetStream
 import GetStreamActivityFeed
 
+struct FeedView: View {
+    var items: [FeedItem]
+    
+    var body: some View {
+        List {
+            ForEach(items) { item in
+                FeedRow(item: item)
+            }
+        }
+    }
+}
+
 struct FeedRow: View {
     var item: FeedItem
     
@@ -16,17 +28,6 @@ struct FeedRow: View {
     }
 }
 
-struct FeedView: View {
-    var items: [FeedItem]
-    
-    var body: some View {
-        List {
-            ForEach(items) { item in
-                FeedRow(item: item)
-            }
-        }
-    }
-}
 
 struct FeedView_Previews: PreviewProvider {
     static var previews: some View {

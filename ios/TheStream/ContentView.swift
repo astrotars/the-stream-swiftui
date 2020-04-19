@@ -4,32 +4,29 @@ struct ContentView: View {
     @State var user = ""
     @EnvironmentObject var account: Account
     
-    func login() {
+    private func login() {
         account.login(user)
     }
     
     @ViewBuilder
     var body: some View {
         if account.isAuthed {
-            NavigationView {
-                TabView {
-                    TimelineView()
-                        .tabItem {
-                            Image(systemName: "list.dash")
-                            Text("Timeline")
-                    }
-                    ProfileView()
-                        .tabItem {
-                            Image(systemName: "person.fill")
-                            Text("Profile")
-                    }
-                    PeopleView()
-                        .tabItem {
-                            Image(systemName: "person.2.fill")
-                            Text("People")
-                    }
+            TabView {
+                TimelineView()
+                    .tabItem {
+                        Image(systemName: "list.dash")
+                        Text("Timeline")
                 }
-                .navigationBarTitle("TheStream", displayMode: .inline)
+                ProfileView()
+                    .tabItem {
+                        Image(systemName: "person.fill")
+                        Text("Profile")
+                }
+                PeopleView()
+                    .tabItem {
+                        Image(systemName: "person.2.fill")
+                        Text("People")
+                }
             }
         } else {
             VStack(alignment: .leading) {

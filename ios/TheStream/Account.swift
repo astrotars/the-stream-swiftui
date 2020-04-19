@@ -51,7 +51,7 @@ final class Account: ObservableObject {
             completion(try! r.get().results)
         }
     }
-    
+
     func createFeedItem(_ message: String, completion: @escaping () -> Void) {
         let activity = FeedItem(actor: User(id: self.user!), verb: "post", object: UUID().uuidString, message: message)
         
@@ -59,7 +59,7 @@ final class Account: ObservableObject {
             completion()
         }
     }
-    
+
     func fetchUsers(completion: @escaping (_ result: [String]) -> Void) {
         Alamofire
             .request("\(apiRoot)/v1/users",
@@ -79,7 +79,7 @@ final class Account: ObservableObject {
             completion()
         }
     }
-    
+        
     private func setupFeed() {
         Alamofire
             .request("\(apiRoot)/v1/stream-feed-credentials",
