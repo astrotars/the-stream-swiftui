@@ -38,17 +38,15 @@ If you'd like to follow along, you'll need an account with [Stream](https://gets
 
 Once you have an account with Stream, you need to set up a development app:
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/5fc226d8c9f1bc6863059eaf318e1771de610ab6.png)
+![](images/create-app.png)
 
 You also need to set up two flat Feeds, "user" and "timeline", in of stream:
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/8d2970825088642f7c97929972d0e310f7cf08be.png)
+![](images/create-user-feed.png)
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/78ceb08dc0cf40281179c12e5b66fff3fcd75b28.png)
+![](images/create-timeline-feed.png)
 
-
-
-You'll need to add the credentials from the Stream app to the source code for it to work. See both the `ios` and `backend` readmes.
+You'll need to add the credentials from the Stream app to the source code for it to work and set up [ngrok](https://ngrok.com/). See both the `ios` and `backend` readmes.
 
 Let's get to building!
 
@@ -62,7 +60,7 @@ In order to communicate with the Stream API, we need a secure frontend token tha
 
 First, we'll be building the login screen which looks like this:
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/bce5676291c898670383330a2110608d377011a9.png)
+![](images/login.png)
 
 To start let's layout our form in SwiftUI. In our `ContentView`, which is instantiated in `SceneDelegate.swift:22` (seen below), we'll create a simple check to see if we're logged in, and show the login form if we're not:
 
@@ -209,7 +207,7 @@ if account.isAuthed {
 
 We'll focus on `ProfileView` to start, since this is where we create messages and view our activity feed.  We'll need to build a form to create the users status update and a `FeedView` which shows all of our updates which looks like:
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/a40d8e513889acda7834f05cb1d3430b6f8282a9.png)
+![](images/empty-profile.png)
 
 And here's the `View` code:
 
@@ -348,7 +346,7 @@ struct FeedRow: View {
 
 Which simple displays the message and author. With all of those pieces put together we can now see our messages:
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/f888c721895a6dd537aa81978fcd030c7d8468a1.png)
+![](images/filled-profile.png)
 
 Next we'll see how to follow multiple user's via a timeline feed and see all of their messages.
 
@@ -360,7 +358,7 @@ Now that users can post messages, we'd like to follow a few and see a combined f
 
 The first thing we need to do is view a list of users and pick a few to follow. We'll start by creating a view that shows all the users and lets a user follow a few. Here is the screen that shows all the users:
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/5caa28e75134b60e197a0cbe1ee79ae9ba2ee57e.png)
+![](images/users-list.png)
 
 And here's the code that backs it:
 
@@ -419,7 +417,7 @@ Since we set our `timelineFeed` up earlier, we simply use that feed object to do
 
 Now that we have a way to follow users we can view our timeline:
 
-![](/Users/jefftaggart/Nextcloud/pkb/assets/8c2efa9fb696767fce893e3658a73a2295a9dd59.png)
+![](images/timeline.png)
 
 Let's look at the code to display our timeline:
 
