@@ -4,12 +4,11 @@
 
 In this post, we'll be creating a simple social network with SwiftUI, called Stream Flutter, that allows a user to post messages to followers.
 
-The app will allow a user to post a message to their followers and view people they follow's updates. Stream's [Activity Feed API](https://getstream.io/activity-feeds/), combined with Swift, make it straightforward to build this sort of complex interaction. All source code for this application is available on [GitHub](https://github.com/psylinse/the-stream-swiftui/). This application is fully functional on both iOS and Android.
+The app will allow a user to post a message to their followers and view updates from people they follow. Stream's [Activity Feed API](https://getstream.io/activity-feeds/), combined with Swift, make it straightforward to build this sort of complex interaction. All source code for this application is available on [GitHub](https://github.com/psylinse/the-stream-swiftui/). This application is fully functional on both iOS and Android.
 
-To keep things focused, we'll be showing the more important code snippets to get the idea of each part across. Often
- there is context around those code snippets which are important, such as layout or navigation. Please refer to the full source if you're confused on how something works, or how we got to a screen. Each snippet will be accompanied by a comment explaining which file and line it came from.
+To keep things focused, we'll be showing the more important code snippets to get the idea of each part across. Often there is context around those code snippets which are important, such as layout or navigation. Please refer to the full source if you're confused on how something works, or how we got to a screen. Each snippet will be accompanied by a comment explaining which file and line it came from.
 
-To build our social network we'll need both a backend and a mobile application. Most of the work is done in the mobile application, but we  need the backend to securely create frontend tokens for interacting with the Stream API.
+To build our social network we'll need both a backend and a mobile application. Most of the work is done in the mobile application, but we need the backend to securely create frontend tokens for interacting with the Stream API.
 
 For the backend, we'll rely on [Express](https://expressjs.com/) (Node.js) leveraging Stream's [JavaScript library](https://github.com/GetStream/stream-js).
 
@@ -17,15 +16,15 @@ For the frontend, we'll build it with Swift wrapping Stream's [Swift](https://gi
 
 To post an update the app will perform these steps:
 
-- User types their name into our mobile application to log in.
-- The mobile app registers user with our backend and receives a Stream Activity Feed [frontend token](https://getstream.io/blog/integrating-with-stream-backend-frontend-options/).
+- The user types their name into our mobile application to log in.
+- The mobile app registers the user with our backend and receives a Stream Activity Feed [frontend token](https://getstream.io/blog/integrating-with-stream-backend-frontend-options/).
 - User types in their message and hits "Post". The mobile app uses the Stream token to create a Stream activity by using Flutter's [platform channels](https://flutter.dev/docs/development/platform-integration/platform-channels) to connect to [Stream's REST API](https://getstream.io/docs_rest/) via the [Swift](https://github.com/getstream/stream-swift) library.
 - User views their posts. The mobile app does this by retrieving its `user` feed via Stream.
 
 If another user wants to follow a user and view their messages, the app goes through this process:
 
 - Log in (same as above).
-- User navigates to the user list and selects a user to follow. The mobile app communicates with Stream API directly to create a [follower relationship](https://getstream.io/get_started/#follow) on their `timeline` feed.
+- The user navigates to the user list and selects a user to follow. The mobile app communicates with Stream API directly to create a [follower relationship](https://getstream.io/get_started/#follow) on their `timeline` feed.
 - User views their timeline. The mobile app uses Stream API to retrieve their `timeline` feed, which is composed of all the messages from who they follow.
 
 The code is split between the iOS mobile application contained in the `ios` directory and the Express backend is in the `backend` directory. See the `README.md` in each folder to see installing and running instructions. If you'd like to follow along with running code, make sure you get both the backend and mobile app running before continuing.
@@ -34,7 +33,7 @@ The code is split between the iOS mobile application contained in the `ios` dire
 
 Basic knowledge of [Node.js](https://nodejs.org/en/) (JavaScript), Swift, and SwiftUI is required to follow this tutorial. This code is intended to run locally on your machine with an internet connection.
 
-If you'd like to follow along, you'll need an account with [Stream](https://getstream.io/accounts/signup/). Please make sure you can run a iOS app. If you haven't done so, make sure you have XCode 11+ [installed](https://developer.apple.com/xcode/). If you're having issues building this project, feel free to open an issue on [GitHub](https://github.com/psylinse/the-stream-swiftui/issues). If you're unfamiliar with SwiftUI, it may help to go through a [tutorial](https://developer.apple.com/tutorials/swiftui/tutorials) before following along.
+If you'd like to follow along, you'll need an account with [Stream](https://getstream.io/accounts/signup/). Please make sure you can run an iOS app. If you haven't done so, make sure you have XCode 11+ [installed](https://developer.apple.com/xcode/). If you're having issues building this project, feel free to open an issue on [GitHub](https://github.com/psylinse/the-stream-swiftui/issues). If you're unfamiliar with SwiftUI, it may help to go through a [tutorial](https://developer.apple.com/tutorials/swiftui/tutorials) before following along.
 
 Once you have an account with Stream, you need to set up a development app:
 
@@ -56,7 +55,7 @@ We'll start by allowing a user to post messages.
 
 ### Step 1: Login
 
-In order to communicate with the Stream API, we need a secure frontend token that allows our mobile application to authenticate with Stream directly. This avoids having to proxy through the `backend`. To do this, we'll need a backend endpoint that uses our Stream account secrets to generate this token. Once we have this token, we don't need the backend to do anything else, since the mobile app has access to the full Stream API.
+To communicate with the Stream API, we need a secure frontend token that allows our mobile application to authenticate with Stream directly. This avoids having to proxy through the `backend`. To do this, we'll need a backend endpoint that uses our Stream account secrets to generate this token. Once we have this token, we don't need the backend to do anything else, since the mobile app has access to the full Stream API.
 
 First, we'll be building the login screen which looks like this:
 
@@ -97,7 +96,7 @@ struct ContentView: View {
 }
 ```
 
-We have a simple `@State` var that is bound to a `TextField` to store what the user types. When click "Login" we'll call our function `.login` which in turns calls the `@EnvironmentObject` `Account`. This `Account` object is essentially a service object that contains our business logic and account data. For simplicity, this object will contain all business logic. In a real application, you'd likely want to split it up. The `Account` object is given in our `SceneDelegate` during the scene setup (in this case there's only 1 scene so it's effectively our application setup):
+We have a simple `@State` var that is bound to a `TextField` to store what the user types. When clicking "Login" we'll call our function `.login` which in turn calls the `@EnvironmentObject` `Account`. This `Account` object is essentially a service object that contains our business logic and account data. For simplicity, this object will contain all business logic. In a real application, you'd likely want to split it up. The `Account` object is given in our `SceneDelegate` during the scene setup (in this case there's only 1 scene so it's effectively our application setup):
 
 ```swift
 // ios/TheStream/SceneDelegate.swift:22
@@ -134,7 +133,7 @@ func login(_ userToLogIn: String) {
 }
 ```
 
-Here we use [AlamoFire](https://github.com/Alamofire/Alamofire) to make an HTTP request to our `backend` to give us an auth token. We'll use this auth token to communciate with other API endpoints. The user registration endpoint in the `backend` simply stores the user in memory and generates a simple token for auth. This is not a real implementation and should be replaced by  authentication and user management works for your application. Because of this, we won't go into detail here (please refer to the [source code](https://github.com/psylinse/the-stream-swiftui/blob/1-social/backend/src/controllers/v1/users/users.action.js#L26-L37) if you're interested).
+Here we use [AlamoFire](https://github.com/Alamofire/Alamofire) to make an HTTP request to our `backend` to give us an auth token. We'll use this auth token to communicate with other API endpoints. The user registration endpoint in the `backend` simply stores the user in memory and generates a simple token for auth. This is not a real implementation and should be replaced by authentication and user management works for your application. Because of this, we won't go into detail here (please refer to the [source code](https://github.com/psylinse/the-stream-swiftui/blob/1-social/backend/src/controllers/v1/users/users.action.js#L26-L37) if you're interested).
 
 Once we've stored the logged in user and auth token, we're ready to set up Stream Feed. The last line calls `.setupFeed`:
 
@@ -170,7 +169,7 @@ private func setupFeed() {
 }
 ```
 
-Once again, we use `AlamoFire` to send an HTTP request to our backend to get the Stream Feed Crendentials. We use the auth token from before to authenticate the request. The response gives us our Stream frontend token, so we can interact with the Stream API directly, the Stream App ID, and Stream API Key. We use this data to initialize Stream Activity Feed Client. We also set our user up so Stream knows what user is communicating with the API and store the feed token to authenticate further requests. The function finishes with storing references to two feeds that we'll use, the user feed and timeline feed. We'll see how these are used later. We indicate that we're authed. 
+Once again, we use `AlamoFire` to send an HTTP request to our backend to get the Stream Feed Credentials. We use the auth token from before to authenticate the request. The response gives us our Stream frontend token, so we can interact with the Stream API directly, the Stream App ID, and Stream API Key. We use this data to initialize Stream Activity Feed Client. We also set our user up so Stream knows what user is communicating with the API and store the feed token to authenticate further requests. The function finishes with storing references to two feeds that we'll use, the user feed and timeline feed. We'll see how these are used later. We indicate that we're authed. 
 
 Now that we're logged in and authenticated with Stream, we're ready to post our first message! 
 
@@ -205,7 +204,7 @@ if account.isAuthed {
 
 
 
-We'll focus on `ProfileView` to start, since this is where we create messages and view our activity feed.  We'll need to build a form to create the users status update and a `FeedView` which shows all of our updates which looks like:
+We'll focus on `ProfileView` to start since this is where we create messages and view our activity feed.  We'll need to build a form to create the users status update and a `FeedView` which shows all of our updates which looks like:
 
 ![](images/empty-profile.png)
 
@@ -309,7 +308,7 @@ func fetchFeed(_ feedType: FeedType, completion: @escaping (_ result: [FeedItem]
 }
 ```
 
-We find the correct feedt o us and return the last 50 items from that feed and pass it back via our completion. In the `View` we pass those items to the `FeedView`:
+We find the correct feed o us and return the last 50 items from that feed and pass it back via our completion. In the `View` we pass those items to the `FeedView`:
 
 ```swift
 // ios/TheStream/FeedView.swift:6
@@ -344,11 +343,11 @@ struct FeedRow: View {
 }
 ```
 
-Which simple displays the message and author. With all of those pieces put together we can now see our messages:
+Which simply displays the message and author. With all of those pieces put together we can now see our messages:
 
 ![](images/filled-profile.png)
 
-Next we'll see how to follow multiple user's via a timeline feed and see all of their messages.
+Next, we'll see how to follow multiple users via a timeline feed and see all of their messages.
 
 ## User Timeline
 
@@ -411,7 +410,7 @@ func follow(_ user: String, completion: @escaping () -> Void) {
 }
 ```
 
-Since we set our `timelineFeed` up earlier, we simply use that feed object to do the work. We're adding a [follow relationship](https://getstream.io/docs/#following) to another user's `user` feed to this user's `timeline` feed. All this means is anytime a user posts to their `user` feed (implemented in the first part) we'll see it on our `timeline` feed. The cool part is, we can add any number of users feeds to our `timeline` feed and Stream will return a well-ordered list of activities.
+Since we set our `timelineFeed` up earlier, we simply use that feed object to do the work. We're adding a [follow relationship](https://getstream.io/docs/#following) to another user's `user` feed to this user's `timeline` feed. All this means is anytime a user post to their `user` feed (implemented in the first part) we'll see it on our `timeline` feed. The cool part is, we can add any number of users feeds to our `timeline` feed and Stream will return a well-ordered list of activities.
 
 ### Step 2: View Timeline
 
@@ -440,7 +439,7 @@ struct TimelineView: View {
 }
 ```
 
-The cool thing is, since we already built our `FeedView` for our `ProfileView`, we're basically done. We simply fetch the `.timeline` feed items and display them with the `FeedView`.
+The cool thing is since we already built our `FeedView` for our `ProfileView`, we're done. We simply fetch the `.timeline` feed items and display them with the `FeedView`.
 
 
 
