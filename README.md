@@ -35,6 +35,8 @@ Basic knowledge of [Node.js](https://nodejs.org/en/) (JavaScript), Swift, and Sw
 
 If you'd like to follow along, you'll need an account with [Stream](https://getstream.io/accounts/signup/). Please make sure you can run an iOS app. If you haven't done so, make sure you have XCode 11+ [installed](https://developer.apple.com/xcode/). If you're having issues building this project, feel free to open an issue on [GitHub](https://github.com/psylinse/the-stream-swiftui/issues). If you're unfamiliar with SwiftUI, it may help to go through a [tutorial](https://developer.apple.com/tutorials/swiftui/tutorials) before following along.
 
+You also need to have the `backend` running. Please follow the instructions in the `backend` readme to see how to get it going.
+
 Once you have an account with Stream, you need to set up a development app:
 
 ![](images/create-app.png)
