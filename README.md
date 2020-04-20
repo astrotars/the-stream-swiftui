@@ -1,6 +1,6 @@
 # Swift Stream: Building a Social Network with Stream and SwiftUI
 
-In this post, we'll be creating a simple social network, called Swift Stream, that allows a user to post messages to followers, chat either 1-on-1 or in groups.
+In this post, we'll be creating a simple social network, called The Stream, that allows a user to post messages to followers, chat either 1-on-1 or in groups.
 
 Stream's [Activity Feed API](https://getstream.io/activity-feeds/) and [Chat API](https://getstream.io/chat) combined with Swift makes it straightforward to build this sort of complex interaction. All source code for this application is available on [GitHub](https://github.com/psylinse/the-stream-swiftui).
 
