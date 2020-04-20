@@ -18,7 +18,7 @@ To post an update the app will perform these steps:
 
 - The user types their name into our mobile application to log in.
 - The mobile app registers the user with our backend and receives a Stream Activity Feed [frontend token](https://getstream.io/blog/integrating-with-stream-backend-frontend-options/).
-- User types in their message and hits "Post". The mobile app uses the Stream token to create a Stream activity by using Flutter's [platform channels](https://flutter.dev/docs/development/platform-integration/platform-channels) to connect to [Stream's REST API](https://getstream.io/docs_rest/) via the [Swift](https://github.com/getstream/stream-swift) library.
+- User types in their message and hits "Post". The mobile app uses the Stream token to create a Stream activity and connects to [Stream's REST API](https://getstream.io/docs_rest/) via the [Swift](https://github.com/getstream/stream-swift) library.
 - User views their posts. The mobile app does this by retrieving its `user` feed via Stream.
 
 If another user wants to follow a user and view their messages, the app goes through this process:
@@ -33,7 +33,7 @@ The code is split between the iOS mobile application contained in the `ios` dire
 
 Basic knowledge of [Node.js](https://nodejs.org/en/) (JavaScript), Swift, and SwiftUI is required to follow this tutorial. This code is intended to run locally on your machine with an internet connection.
 
-If you'd like to follow along, you'll need an account with [Stream](https://getstream.io/accounts/signup/). Please make sure you can run an iOS app. If you haven't done so, make sure you have XCode 11+ [installed](https://developer.apple.com/xcode/). If you're having issues building this project, feel free to open an issue on [GitHub](https://github.com/psylinse/the-stream-swiftui/issues). If you're unfamiliar with SwiftUI, it may help to go through a [tutorial](https://developer.apple.com/tutorials/swiftui/tutorials) before following along.
+If you'd like to follow along, you'll need an account with [Stream](https://getstream.io/accounts/signup/). Please make sure you can run an iOS app. If you haven't done so, make sure you have XCode 11+ [installed](https://developer.apple.com/xcode/). If you're having issues building this project, feel free to open an issue on [GitHub](https://github.com/psylinse/the-stream-swiftui/issues). If you're unfamiliar with SwiftUI, it may help to go through a [tutorial](https://developer.apple.com/tutorials/swiftui/tutorials) before following along. The SwiftUI previes are unreliabale at the time of this writing, so don't worry if you they aren't working for you.
 
 You also need to have the `backend` running. Please follow the instructions in the `backend` readme to see how to get it going.
 
