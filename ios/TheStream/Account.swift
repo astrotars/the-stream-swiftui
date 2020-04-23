@@ -16,7 +16,7 @@ final class Account: ObservableObject {
     
     // MODIFY THIS LINE
     // To access your backend locally make sure it's running (follow readme in backend directory) and use something like: https://ngrok.com/
-    private let apiRoot = "https://06ebb6db.ngrok.io"
+    private let apiRoot = "https://daceda74.ngrok.io"
     private var authToken: String?
     private var feedToken: String?
     private var userFeed: FlatFeed?
@@ -83,29 +83,13 @@ final class Account: ObservableObject {
         }
     }
     
-    func createPrivateChannel(_ users: [String], completion: @escaping (Channel) -> Void) {
+    func createPrivateChannel(_ user: String, _ withUser: String, completion: @escaping (Channel) -> Void) {
+        let users = [user, withUser]
         let channelId = users.sorted().joined(separator: "-")
         let channel = StreamChatClient.Client.shared.channel(
             type: .messaging,
             id: channelId,
             members: users.map { StreamChatClient.User(id: $0) }
-        )
-        
-        channel.create { (result) in
-            completion(try! result.get().channel)
-        }
-    }
-    
-    func createPublicChannel(_ name: String, completion: @escaping (Channel) -> Void) {
-        let id = name
-            .lowercased()
-            .components(separatedBy: .whitespaces)
-            .joined(separator: "-")
-        
-        let channel = StreamChatClient.Client.shared.channel(
-            type: .livestream,
-            id: id,
-            extraData: ChannelExtraData(name: name, imageURL: URL(string: "https://robohash.org/\(id).png"))
         )
         
         channel.create { (result) in

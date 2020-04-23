@@ -10,9 +10,11 @@ struct PeopleView: View {
         List {
             ForEach(users.indices, id: \.self) { i in
                 HStack() {
-                    Text(self.users[i])
+                    Text(self.users[i]).onTapGesture {
+                        self.tag = i
+                    }
                     NavigationLink(destination: PrivateChatView(user: self.account.user!, withUser: self.users[i]), tag: i, selection: self.$tag) {
-                        EmptyView()
+                        Spacer()
                     }
                     Image(systemName: "message").onTapGesture {
                         self.tag = i
