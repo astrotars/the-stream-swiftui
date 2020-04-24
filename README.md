@@ -8,12 +8,12 @@ Using our code from part 2, we only need to add to our iOS application, since ou
 The app goes through these steps to enable group chat:
 
 * User navigates to a list of chat channels they can join. To start there will be none, so they must create the first one.
-* The user clicks "New Channel" to create a new chat channel.
+* The user fills out a name and clicks "Create" to create a new chat channel.
 * The mobile app queries the channel for previous messages and indicates to Stream that we'd like to watch this channel for new messages. This process creates the channel in Stream. This The mobile app listens for new messages.
 * The user creates a new message and sends it to the Stream Chat API. Stream broadcasts this message to all users watching that channel. 
 * When the message is broadcast, including messages created by the user, the mobile application consumes the event and displays the message.
 
-We rely on Stream's Swift libraries to do most of the work communicating with the API. Similar to part 2, we leverage Stream's UI components to perform most of the steps above. If you'd like to follow along, make sure you get both the backend and ios app running part 2 before continuing.
+We rely on Stream's Swift libraries to do most of the work communicating with the API and rendering the chat. Similar to part 2, we leverage Stream's UI components to perform most of the steps above. If you'd like to follow along, make sure you get both the `backend` and `ios` app running part 2 before continuing.
 
 ### Adding Channels Navigation
 
@@ -61,7 +61,7 @@ This is the same as part 2, except we add a `ChannelsView` to our tab bar. Our a
 
 ### Viewing Channels
 
-Now when a user clicks on "Channels" in the `TabView` we'll show our `ChannelsView`. This view will compose two pieces together. First we'll have a small form to create a new channel combined with an embedded Stream UI component that lists all channels given some filter. Our view looks like this:
+Now when a user clicks on "Channels" in the `TabView` we'll show our `ChannelsView`. This view will compose two pieces together. First, we'll have a small form to create a new channel combined with an embedded Stream UI component that lists all channels given some filter. Our view looks like this:
 
 ![](images/channels-list.png)
 
@@ -121,9 +121,9 @@ func createPublicChannel(_ name: String, completion: @escaping (Channel) -> Void
 }
 ```
 
-First, we convert the name into a Stream appropriate channel id. We use the previously initialized client to initialize and create a "livestream" channel. Livestream is a nice default channel type to use for a public channel such as this. If none of the default types work for your application, you can create your own channel types.
+First, we convert the name into a Stream appropriate channel id. We use the previously initialized client to initialize and create a "livestream" channel. Livestream is a nice default channel type to use for a public channel such as this. If none of the default types work for your application, you can create different channel types.
 
-Now that a channel can be created let's see how we list them. The `ChannelsView` object initailizes a `ChannelsPresenter` which is a Stream class that informs their UI components what type of list we want. In our case, we're simply looking for all channels of the type "livestream". We hold a reference in `ChannelsView` so we can refresh after creating a new channel (see above).
+Now that a channel can be created let's see how we list them. The `ChannelsView` object initializes a `ChannelsPresenter` which is a Stream class that informs their UI components what type of list we want. In our case, we're simply looking for all channels of the type "livestream". We hold a reference in `ChannelsView` so we can refresh after creating a new channel (see above).
 
 Let's see what our `StreamChannelsView` looks like:
 
