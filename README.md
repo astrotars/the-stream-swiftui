@@ -50,7 +50,7 @@ exports.streamChatCredentials = async (req, res) => {
 };
 ```
 
-This endpoint generates the Stream Chat frontend token. It also creates or updates the user to associate the token with the user so Stream knows who's talking to it when actions are taken in the mobile application. Using this endpoint, we can modify our login flow to request these credentials as well. We modify `.setupFeed` from part one to call to `.setupChat` after we're done with the feed setup. Here's the new version:
+This endpoint generates the Stream Chat frontend token. It also creates or updates the user to associate the token with the user. This is so Stream knows who's talking to it when actions are taken in the mobile application. Using this endpoint, we can modify our login flow to request these credentials as well. We modify `.setupFeed` from part one to call to `.setupChat` after we're done with the feed setup. Here's the new version of `setupFeed`:
 
 ```swift
 // ios/TheStream/Account.swift:100
@@ -85,7 +85,7 @@ private func setupFeed() {
 }
 ```
 
-This code is largely the same except for the last line where we call `.setupChat` instead of setting the `isAuthed` flag. Next let's look at `.setupChat`:
+This code is largely the same except for the last line where we call `.setupChat` instead of setting the `isAuthed` flag. Here's `.setupChat`:
 
 ```swift
 // ios/TheStream/Account.swift:130
@@ -117,7 +117,7 @@ Here we call the endpoint we set up previously and get our frontend token. We us
 ## Selecting a User to Chat With
 ### Step 1: Adding Navigation
 
-For this app, the chat view is it's own screen, meaning there is not tab bar when chatting. To support this we first wrap our `TabView` inside of `ContentView` with a `NavigationView`:
+For this app, the chat view is it's own screen, meaning there is no tab bar when chatting. To support this we first wrap our `TabView` inside of `ContentView` with a `NavigationView`:
 
 ```swift
 // ios/TheStream/ContentView.swift:11 
@@ -150,15 +150,15 @@ var body: some View {
 }
 ```
 
-This `NavigationView` wrapper allows us to push new views on the stack and provides transitions and a back button. Since we have a nice navigation bar, we add a small title to the application. The list of people now looks like this:
+This `NavigationView` wrapper allows us to push new views on the stack and provides transitions and a back button. Since we have a nice navigation bar, we add a small title to the application. The list of people now looks like this (ignore the chat bubble for now as it's explained next):
 
 ![](images/user-list.png)
 
-Notice the nice navigation bar at the top now. This is present on all screens now and automatically provides a back button if we push a new view on the navigation stack, such as our 1-on-1 chat. Let's see push a new view on the stack
+Notice the default navigation bar at the top now. This is present on all screens now and automatically provides a back button if we push a new view on the navigation stack, such as our 1-on-1 chat. This allows the user to get back to the main view when they're done chatting. Let's see push a chat view on the stack.
 
 ### Step 2: Starting a Chat
 
-Now that we have a `NavigationView` at the top of our hierarchy, we can build a `NavigationLink` to show the chat. Since we'd like to preserve the follow action, we'll place a start chat icon next to the follow icon. We'll also make the whole row clickable. This means that unless the user explicitly clicks the follow icon, we'll start a chat. Here's the `PeopleView` code now:
+Now that we have a `NavigationView` at the top of our hierarchy, we can build a `NavigationLink` to show the chat. Since we'd like to preserve the follow action, we'll place a start chat icon next to the follow icon. We'll also make the whole row clickable. This means that unless the user explicitly clicks the follow icon (from part 1), we'll start a chat. Here's `PeopleView` with these udpates:
 
 ```swift
 // ios/TheStream/PeopleView.swift:3
@@ -204,9 +204,9 @@ struct PeopleView: View {
 }
 ```
 
-The navigation is done by the `NavigationLink` embedded in the row. Since we give the content of the `NavigationLink` a `Spacer` this forces the icons to align right, while giving the whole row a clickable area. Each link is tagged with its index allowing us to "select" it when a user clicks the name or the message icon.
+The navigation is done by the `NavigationLink` embedded in the row. Since we give the content of the `NavigationLink` a `Spacer` this forces the icons to align right. Each link is tagged with its index allowing us to "select" it when a user clicks the name or the message icon. This allows each element to be clickable by assigning the tag, which triggers the `NavigationLink` to be selected.
 
-When a user clicks, the `NavigationLink` pushes a `PrivateChatView` onto the navigation stack. By using these built-in navigation views, we get a nice transition (swipe animation) to the next view with a back button built for us. Now we simply add our chat view in and we're done!
+When the `NavigationLink` is selected, by setting the tag or clicking on the `Spacer`, it pushes a `PrivateChatView` (defined next) onto the navigation stack. By using these built-in navigation views, we get a nice default transition (swipe animation) to the next view with a back button built for us. Now we simply add our chat view in and we're done!
 
 ## Viewing a Chat
 ### Step 1: Creating a Channel
@@ -284,8 +284,8 @@ struct StreamChatView: UIViewControllerRepresentable {
 
 We use SwiftUI's [`UIViewControllerRepresentable`](https://developer.apple.com/documentation/swiftui/uiviewcontrollerrepresentable) which allows us to create and manage a `UIViewController`. Since Stream's high-level components are `UIViewController`s this is exactly what we need to bring them into SwiftUI. 
 
-All Stream's component needs to render is a `ChannelPresenter`. Since we instantiated this object when creating the channel, we simply use the one passed along to us by `PrivateChatChannel`. With that object, we create a `ChatViewController` instance, which comes from Stream's library, and give it the `ChannelPresenter`. Now we get a full chat experience with only a few lines of work:
+All Stream's component needs to render is a `ChannelPresenter`. There's a lot of oppurtunities to customize this view, but we'll keep it simple for now. Since we instantiated this object when creating the channel, we simply use the one passed along to us by `PrivateChatChannel`. With that object, we create a `ChatViewController` instance, which comes from Stream's library, and give it the `ChannelPresenter`. Now we get a full chat experience with only a few lines of work:
 
 ![](images/chat-populated.png)
 
-And we're done. Stream's built-in views makes it straightforward to build a great chat experience. 
+And we're done. Stream's built-in views makes it straightforward to build a great chat experience!
