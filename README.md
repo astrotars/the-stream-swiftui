@@ -173,6 +173,36 @@ private func setupFeed() {
 
 Once again, we use `AlamoFire` to send an HTTP request to our backend to get the Stream Feed Credentials. We use the auth token from before to authenticate the request. The response gives us our Stream frontend token, so we can interact with the Stream API directly, the Stream App ID, and Stream API Key. We use this data to initialize Stream Activity Feed Client. We also set our user up so Stream knows what user is communicating with the API and store the feed token to authenticate further requests. The function finishes with storing references to two feeds that we'll use, the user feed and timeline feed. We'll see how these are used later. We then indicate that we're authed by setting `.isAuthed` which allows our view to know when we're ready to move on. 
 
+Let's look at the `backend` code:
+
+```javascript
+// backend/src/controllers/v1/stream-feed-credentials/stream-feed-credentials.action.js:1
+import dotenv from 'dotenv';
+import stream from "getstream";
+
+dotenv.config();
+
+exports.streamFeedCredentials = async (req, res) => {
+  try {
+    const apiKey = process.env.STREAM_API_KEY;
+    const apiSecret = process.env.STREAM_API_SECRET;
+    const appId = process.env.STREAM_APP_ID;
+
+    const client = stream.connect(apiKey, apiSecret, appId);
+
+    await client.user(req.user).getOrCreate({ name: req.user });
+    const token = client.createUserToken(req.user);
+
+    res.status(200).json({ token, apiKey, appId });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+```
+
+This endpoint simply uses the stream library to create the user inside of stream and generate a frontend token for use.
+
 Now that we're logged in and authenticated with Stream, we're ready to post our first activity! 
 
 ### Step 2: Creating a Status Message
