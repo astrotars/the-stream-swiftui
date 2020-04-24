@@ -1,4 +1,4 @@
-# Stream Flutter: Building a Social Network with Stream and Flutter
+# Building a Social Network with Stream on iOS with SwiftUI
 ## Part 3: Group Channels
 
 In the third part of our series, we're building group chat into our social application. This allows users to chat with multiple people at the same time. We leverage [Stream Chat](https://getstream.io/chat/) to do the heavy lifting. This post assumes you've gone through [part 1](https://github.com/psylinse/the-stream-swiftui/tree/1-social) and [part 2](https://github.com/the-stream-swiftui/tree/2-messaging). 
