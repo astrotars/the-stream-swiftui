@@ -18,7 +18,101 @@ The app goes through these steps to allow a user to chat with another:
 * The user creates a new message and sends it to the Stream API. 
 * When the message is created, or a message from the other user is received, the mobile application consumes the event and displays the message.
 
-Since we're relying on the Stream mobile libraries to do the heavy lifting, most of this work happens in the Stream Chat UI Components. If you'd like to follow along, make sure you get both the backend and mobile app running part 1 before continuing.
+Since we're relying on the Stream mobile libraries to do the heavy lifting, most of this work happens in the Stream Chat UI Components. If you'd like to follow along, make sure you get both the backend and mobile app running part 1 before continuing. Please refer the respective package management files (Podfile, package.json) to see what versions of the libraries we're using.
+
+## Configuring Stream Chat
+
+To start, we need to configure Stream chat. We'll add on to the login flow that we created in part 1. Recall when we login we set up Stream. This instance of Stream is for the Stream Feed API. For chat, we need to set up a different client to interact with the Stream Chat API. Like before, we need an endpoint that creates our Stream Chat frontend token, so our mobile application can communicate directly with the Stream API. Let's check out our new endpoint:
+
+```javascript
+// backend/src/controllers/v1/stream-chat-credentials/stream-chat-credentials.action.js:6
+exports.streamChatCredentials = async (req, res) => {
+  try {
+    const data = req.body;
+    const apiKey = process.env.STREAM_API_KEY;
+    const apiSecret = process.env.STREAM_API_SECRET;
+
+    const client = new StreamChat(apiKey, apiSecret);
+
+    const user = Object.assign({}, data, {
+      id: req.user,
+      role: 'user',
+      image: `https://robohash.org/${req.user}`,
+    });
+    const token = client.createToken(user.id);
+    await client.updateUser(user);
+
+    res.status(200).json({ user, token, apiKey });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+```
+
+This endpoint generates the Stream Chat frontend token. It also creates or updates the user to associate the token with the user so Stream knows who's talking to it when actions are taken in the mobile application. Using this endpoint, we can modify our login flow to request these credentials as well. We modify `.setupFeed` from part one to call to `.setupChat` after we're done with the feed setup. Here's the new version:
+
+```swift
+// ios/TheStream/Account.swift:100
+private func setupFeed() {
+    Alamofire
+        .request("\(apiRoot)/v1/stream-feed-credentials",
+            method: .post,
+            headers: ["Authorization" : "Bearer \(authToken!)"])
+        .responseJSON { [weak self] response in
+            let body = response.value as! NSDictionary
+            let feedToken = body["token"]! as! String
+            let appId = body["appId"] as! String
+            let apiKey = body["apiKey"] as! String
+            
+            if let user = self?.user {
+                GetStream.Client.config = .init(apiKey: apiKey,
+                                                appId: appId)
+                
+                
+                GetStream.Client.shared.setupUser(
+                    GetStreamActivityFeed.User(name: user,
+                                               id: user),
+                    token: feedToken
+                ) { [weak self] (result) in
+                    self?.userFeed = Client.shared.flatFeed(feedSlug: "user")
+                    self?.timelineFeed = Client.shared.flatFeed(feedSlug: "timeline")
+                    
+                    self?.setupChat()
+                }
+            }
+    }
+}
+```
+
+This code is largely the same except for the last line where we call `.setupChat` instead of setting the `isAuthed` flag. Next let's look at `.setupChat`:
+
+```swift
+// ios/TheStream/Account.swift:130
+private func setupChat() {
+    Alamofire
+        .request("\(apiRoot)/v1/stream-chat-credentials",
+            method: .post,
+            headers: ["Authorization" : "Bearer \(authToken!)"])
+        .responseJSON { [weak self] response in
+            print(response)
+            let body = response.value as! NSDictionary
+            let chatToken = body["token"]! as! String
+            let apiKey = body["apiKey"] as! String
+            
+            if let user = self?.user {
+                StreamChatClient.Client.config = .init(apiKey: apiKey, logOptions: .info)
+                StreamChatClient.Client.shared.set(
+                    user: StreamChatClient.User(id: user),
+                    token: chatToken
+                )
+                self?.isAuthed = true
+            }
+    }
+}
+```
+
+Here we call to the endpoint we set up previously and get our frontend token. We use this to initialize the Chat Client singleton for use later. We then indicate we're authenticated via the `isAuthed` flag so the application knows we're all set up and ready to go.
 
 ## Selecting a User to Chat With
 ### Step 1: Adding Navigation
