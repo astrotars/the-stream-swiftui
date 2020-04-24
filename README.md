@@ -13,7 +13,7 @@ For the mobile app, we'll build it with Swift wrapping the Stream Chat [Swift](h
 
 The app goes through these steps to allow a user to chat with another:
 
-* User navigates to the user list, selects a user, and clicks "Chat". The mobile application joins a 1-on-1 chat channel between the two users.
+* User navigates to the user list and clicks on their name or chat icon. The mobile application joins a 1-on-1 chat channel between the two users.
 * The app queries the channel for previous messages and indicates to Stream that we'd like to watch this channel for new messages. The mobile app listens for new messages.
 * The user creates a new message and sends it to the Stream API. 
 * When the message is created, or a message from the other user is received, the mobile application consumes the event and displays the message.
