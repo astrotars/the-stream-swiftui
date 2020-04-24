@@ -1,7 +1,7 @@
 # Stream Flutter: Building a Social Network with Stream and Flutter
 ## Part 3: Group Channels
 
-In the third part of our series, we're building group chat into our social application. This allows users to chat with multiple people at the same time. We leverage [Stream Chat](https://getstream.io/chat/) to do the heavy lifting. This post assumes you've gone through [part 1](https://github.com/psylinse/the-stream-swiftui/tree/1-social) and [part 2](https://github.com/the-stream-swiftui/stream-flutter/tree/2-messaging). 
+In the third part of our series, we're building group chat into our social application. This allows users to chat with multiple people at the same time. We leverage [Stream Chat](https://getstream.io/chat/) to do the heavy lifting. This post assumes you've gone through [part 1](https://github.com/psylinse/the-stream-swiftui/tree/1-social) and [part 2](https://github.com/the-stream-swiftui/tree/2-messaging). 
 
 Using our code from part 2, we only need to add to our iOS application, since our `backend` gives us everything we need already. To recap, the `backend` generates a frontend token for Stream Chat which allows the mobile application to communicate directly with the Stream Chat API. Also, since we have our Stream Chat dependencies already from the direct messaging implementation, there are no additional libraries. The previously installed [Swift](https://github.com/GetStream/stream-chat-swift) library is all we need.
 
