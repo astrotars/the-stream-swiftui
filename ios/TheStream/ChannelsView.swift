@@ -12,7 +12,7 @@ struct ChannelsView: View {
         VStack {
             HStack() {
                 TextField("Start new channel...", text: $channelName, onCommit: createChannel)
-                Button(action: createChannel) { Text("Start") }
+                Button(action: createChannel) { Text("Create") }
             }.padding()
             StreamChannelsView(
                 channelsPresenter: channelsPresenter
