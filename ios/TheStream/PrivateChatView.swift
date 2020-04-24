@@ -1,28 +1,29 @@
 import SwiftUI
 import StreamChat
 import StreamChatCore
+import StreamChatClient
 
 struct PrivateChatView: View {
     var user: String
     var withUser: String
 
     @EnvironmentObject var account: Account
-    @State var channelPresenter: ChannelPresenter?
+    @State var channel: Channel?
     
     @ViewBuilder
     var body: some View {
-        if (channelPresenter == nil) {
+        if (channel == nil) {
             Text("Loading...").onAppear(perform: loadChannel)
         } else {
-            StreamChatView(channelPresenter: channelPresenter!).navigationBarTitle("Chat w/ \(withUser)")
+            StreamChatView(channelPresenter: ChannelPresenter(channel: channel!))
+                .navigationBarTitle("Chat w/ \(withUser)")
+            
         }
     }
     
     private func loadChannel() {
-        account.createPrivateChannel([user, withUser]) { channel in
-            self.channelPresenter = ChannelPresenter(
-                channel: channel
-            )
+        account.createPrivateChannel(user, withUser) { channel in
+            self.channel = channel
         }
     }
 }
