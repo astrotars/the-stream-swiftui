@@ -10,3 +10,6 @@ Part 3 contains the final product. If you'd like to skip the tutorials and see t
 * [Part 2](https://github.com/psylinse/the-stream-swiftui/tree/2-messaging)
 * [Part 3](https://github.com/psylinse/the-stream-swiftui/tree/3-channels)
 
+Other implemenations:
+
+* [Flutter](https://github.com/nparsons08/stream-flutter)
