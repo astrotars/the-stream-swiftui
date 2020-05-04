@@ -1,15 +1,15 @@
-# Swift Stream: Building a Social Network with Stream and SwiftUI
+# Swift Stream: Building a Social Network with SwiftUI
 
-In this post, we'll be creating a simple social network, called The Stream, that allows a user to post messages to followers, chat either 1-on-1 or in groups.
+In this series of tutorials, we'll be creating a simple social network, called The Stream, that allows a user to post messages to followers, chat either 1-on-1 or in groups.
 
-Stream's [Activity Feed API](https://getstream.io/activity-feeds/) and [Chat API](https://getstream.io/chat) combined with Swift makes it straightforward to build this sort of complex interaction. All source code for this application is available on [GitHub](https://github.com/psylinse/the-stream-swiftui).
+Stream's [Activity Feed API](https://getstream.io/activity-feeds/) and [Chat API](https://getstream.io/chat/), combined with Swift, makes it straightforward to build this sort of complex interaction, with far less overhead than creating it from scratch. All source code for this application is available on [GitHub](https://github.com/nparsons08/the-stream-swiftui).
 
-Part 3 contains the final product. If you'd like to skip the tutorials and see the end result, please see the `README.md` in the `backend` and `frontend` directories on that branch to get going. You can find each part of this series by the corresponding git branch or click a link below:
+If you would like to skip ahead, [Part 3]() contains the final completed project.
 
-* [Part 1](https://github.com/psylinse/the-stream-swiftui/tree/1-social)
-* [Part 2](https://github.com/psylinse/the-stream-swiftui/tree/2-messaging)
-* [Part 3](https://github.com/psylinse/the-stream-swiftui/tree/3-channels)
+You can find each part of this series by the corresponding link below:
 
-Other implementations:
+- [Part 1](https://getstream.io/blog/social-network-swiftui-part-1/) - Activity Feeds
+- [Part 2](https://getstream.io/blog/social-network-swiftui-part-2/) - Direct Messaging
+- [Part 3](https://getstream.io/blog/social-network-swiftui-part-3/) - Group Channels
 
-* [Flutter](https://github.com/nparsons08/stream-flutter)
+Happy coding!
