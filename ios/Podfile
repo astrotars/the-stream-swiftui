@@ -5,5 +5,6 @@ target 'TheStream' do
 
   pod 'GetStreamActivityFeed', '~> 2.0'
   pod 'StreamChat', '~> 2.0'
+  pod 'VoxeetUXKit', '~> 1.0'
   pod 'Alamofire', '~> 4.0'
 end

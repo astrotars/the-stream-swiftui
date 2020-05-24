@@ -16,7 +16,8 @@ final class Account: ObservableObject {
     
     // MODIFY THIS LINE
     // To access your backend locally make sure it's running (follow readme in backend directory) and use something like: https://ngrok.com/
-    private let apiRoot = "https://e369062b.ngrok.io"
+    // or turn off security policies to access localhost
+    private let apiRoot = "https://18889025.ngrok.io"
     private var authToken: String?
     private var feedToken: String?
     private var userFeed: FlatFeed?

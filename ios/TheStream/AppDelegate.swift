@@ -1,8 +1,21 @@
 import UIKit
+import VoxeetSDK
+import VoxeetUXKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Voxeet SDKs initialization.
+        VoxeetSDK.shared.initialize(consumerKey: "<VOXEET_CONSUMER_KEY>", consumerSecret: "VOXEET_CONSUMER_SECRET")
+        VoxeetUXKit.shared.initialize()
+        
+        // Example of public variables to change the conference behavior.
+        VoxeetSDK.shared.notification.push.type = .none
+        VoxeetSDK.shared.conference.defaultBuiltInSpeaker = true
+        VoxeetSDK.shared.conference.defaultVideo = true
+        VoxeetUXKit.shared.appearMaximized = true
+        VoxeetUXKit.shared.telecom = false
+        
         return true
     }
     

@@ -1,4 +1,5 @@
 import SwiftUI
+import VoxeetSDK
 
 struct PeopleView: View {
     @EnvironmentObject var account: Account
@@ -18,6 +19,19 @@ struct PeopleView: View {
                     }
                     Image(systemName: "message").onTapGesture {
                         self.tag = i
+                    }
+                    Image(systemName: "video").onTapGesture {
+                        let options = VTConferenceOptions()
+                        options.alias = [self.account.user!, self.users[i]].sorted().joined(separator: "-")
+                        
+                        VoxeetSDK.shared.conference.create(options: options, success: { conference in
+                            let joinOptions = VTJoinOptions()
+                            joinOptions.constraints.video = false
+                            VoxeetSDK.shared.conference.join(conference: conference, options: joinOptions, success: { conference in
+                            }, fail: { error in print(error)
+                            })
+                        }, fail: { error in print(error)
+                        })
                     }
                     Image(systemName: "plus.circle").onTapGesture {
                         self.account.follow(self.users[i]) {

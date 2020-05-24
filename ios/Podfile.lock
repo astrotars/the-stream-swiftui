@@ -39,6 +39,9 @@ PODS:
   - RxRelay (5.1.1):
     - RxSwift (~> 5)
   - RxSwift (5.1.1)
+  - SDWebImage (5.8.0):
+    - SDWebImage/Core (= 5.8.0)
+  - SDWebImage/Core (5.8.0)
   - SnapKit (5.0.1)
   - Starscream (3.1.1)
   - StreamChat (2.0.1):
@@ -57,11 +60,16 @@ PODS:
     - StreamChatClient
   - SwiftyGif (5.2.0)
   - Swime (3.0.6)
+  - VoxeetSDK (2.3.0)
+  - VoxeetUXKit (1.3.4):
+    - SDWebImage (~> 5.0)
+    - VoxeetSDK (~> 2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - GetStreamActivityFeed (~> 2.0)
   - StreamChat (~> 2.0)
+  - VoxeetUXKit (~> 1.0)
 
 SPEC REPOS:
   trunk:
@@ -79,6 +87,7 @@ SPEC REPOS:
     - RxGesture
     - RxRelay
     - RxSwift
+    - SDWebImage
     - SnapKit
     - Starscream
     - StreamChat
@@ -86,6 +95,8 @@ SPEC REPOS:
     - StreamChatCore
     - SwiftyGif
     - Swime
+    - VoxeetSDK
+    - VoxeetUXKit
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
@@ -102,6 +113,7 @@ SPEC CHECKSUMS:
   RxGesture: d6bd7447ca3a596c7a9702a6a2b6a2bb5d8bae54
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
+  SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   StreamChat: b51631f5cf0e85edd313086880136e581f9800d2
@@ -109,7 +121,9 @@ SPEC CHECKSUMS:
   StreamChatCore: 37ce6d81f92bd893c9e242e4090f3f6a69d1ab00
   SwiftyGif: b85c6b33a9411859d9e1db998b6a8214aea942df
   Swime: d7b2c277503b6cea317774aedc2dce05613f8b0b
+  VoxeetSDK: 1b580287e382c62e03000e6c810282bbbbf0537c
+  VoxeetUXKit: 5d09d9518604fd30fbf376916060a709d8ad2ee8
 
-PODFILE CHECKSUM: d04e976b1276613d417b5fb6159a2948bfcdc11c
+PODFILE CHECKSUM: 8d7170fde0d7c8e7b5d6eca08dbdc1810d88d4ca
 
 COCOAPODS: 1.9.1
