@@ -134,11 +134,14 @@ final class Account: ObservableObject {
         }
     }
     
-    func stopCall(_ callId: String) {
+    func stopCall(_ callId: String, completion: @escaping () -> Void) {
         Alamofire
             .request("\(apiRoot)/v1/calls/\(callId)",
                 method: .delete,
-                headers: ["Authorization" : "Bearer \(authToken!)"])
+            headers: ["Authorization" : "Bearer \(authToken!)"])
+            .response { _ in
+                completion()
+        }
     }
     
     private func setupFeed() {

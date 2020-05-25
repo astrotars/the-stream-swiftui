@@ -26,23 +26,7 @@ struct PeopleView: View {
                     }
                     Image(systemName: "video")
                         .foregroundColor(self.videoIconColor(self.users[i]))
-                        .onTapGesture {
-                            let options = VTConferenceOptions()
-                            let alias =  [self.account.user!, self.users[i]].sorted().joined(separator: "-")
-                            options.alias = alias
-                            
-                            VoxeetSDK.shared.conference.create(options: options, success: { conference in
-                                self.account.startCall(self.users[i], conference.id)
-                                
-                                let joinOptions = VTJoinOptions()
-                                
-                                VoxeetSDK.shared.conference.join(conference: conference, options: joinOptions, success: { conference in
-                                    
-                                }, fail: { error in print(error)
-                                })
-                            }, fail: { error in print(error)
-                            })
-                    }
+                        .onTapGesture { self.startConferenceCall(self.users[i]) }
                     Image(systemName: "plus.circle").onTapGesture {
                         self.account.follow(self.users[i]) {
                             self.showFollowedAlert = true
@@ -55,8 +39,9 @@ struct PeopleView: View {
         .onReceive(pub) { data in
             guard let conference =  data.userInfo!.values.first as? VTConference else {return}
             
-            self.account.stopCall(conference.id)
-            self.fetch()
+            self.account.stopCall(conference.id) {
+                self.fetch()
+            }
         }
         .alert(isPresented: $showFollowedAlert) {
             Alert(title: Text("Followed"))
@@ -73,6 +58,20 @@ struct PeopleView: View {
         }
     }
     
+    private func startConferenceCall(_ otherUser: String) {
+        let options = VTConferenceOptions()
+        let alias =  [self.account.user!, otherUser].sorted().joined(separator: "-")
+        options.alias = alias
+        
+        VoxeetSDK.shared.conference.create(options: options, success: { conference in
+            self.account.startCall(otherUser, conference.id)
+            
+            let joinOptions = VTJoinOptions()
+            
+            VoxeetSDK.shared.conference.join(conference: conference, options: joinOptions, fail: { error in print(error) })
+        }, fail: { error in print(error) })
+    }
+    
     private func videoIconColor(_ user: String) -> Color {
         if (self.calls.isEmpty) {
             return Color.black
@@ -80,7 +79,6 @@ struct PeopleView: View {
             return Color.red
         }
     }
-    
 }
 
 struct PeopleView_Previews: PreviewProvider {
