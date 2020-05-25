@@ -73,7 +73,7 @@ struct PeopleView: View {
     }
     
     private func videoIconColor(_ user: String) -> Color {
-        if (self.calls.isEmpty) {
+        if (self.calls.filter { $0["from"] as! String == user }.isEmpty) {
             return Color.black
         } else {
             return Color.red
