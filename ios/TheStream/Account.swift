@@ -115,6 +115,32 @@ final class Account: ObservableObject {
         }
     }
     
+    func startCall(_ to: String, _ callId: String) {
+        Alamofire
+            .request("\(apiRoot)/v1/calls",
+                method: .post,
+                parameters: ["to" : to, "id" : callId],
+                encoding: JSONEncoding.default,
+                headers: ["Authorization" : "Bearer \(authToken!)"])
+    }
+    
+    func fetchCalls(completion: @escaping (_ result: [NSDictionary]) -> Void) {
+        Alamofire
+            .request("\(apiRoot)/v1/calls",
+                method: .get,
+                headers: ["Authorization" : "Bearer \(authToken!)"])
+            .responseJSON { response in
+                completion(response.value as! [NSDictionary])
+        }
+    }
+    
+    func stopCall(_ callId: String) {
+        Alamofire
+            .request("\(apiRoot)/v1/calls/\(callId)",
+                method: .delete,
+                headers: ["Authorization" : "Bearer \(authToken!)"])
+    }
+    
     private func setupFeed() {
         Alamofire
             .request("\(apiRoot)/v1/stream-feed-credentials",

@@ -3,7 +3,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "user": "john"
+  "user": "blue"
 }
 
 ###
@@ -24,3 +24,25 @@ Content-Type: application/json
 
 ###
 
+POST http://localhost:8080/v1/calls
+Authorization: Bearer 8yZ0mZLeKxRPVZvbfqLYvPPDMQNuDtz09tMrc5hA5mI=
+Accept: application/json
+Content-Type: application/json
+
+{
+	"id": "123",
+	"to": "john"
+}
+
+###
+DELETE http://localhost:8080/v1/calls/123
+Authorization: Bearer v7rZXF3mhuWxLRFkWmINBhOXX26tnroaGMo+mBWH8xM=
+Accept: application/json
+Content-Type: application/json
+
+
+###
+GET http://localhost:8080/v1/calls
+Authorization: Bearer ba8DRRvMqxyBcmny2aS9Ryp9BOcQWYDR8hHX/p45j6Q=
+Accept: application/json
+Content-Type: application/json

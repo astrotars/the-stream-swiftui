@@ -6,6 +6,10 @@ struct PeopleView: View {
     @State var users: [String] = []
     @State var showFollowedAlert: Bool = false
     @State var tag: Int? = nil
+    @State var calls: [NSDictionary] = []
+    
+    let pub = NotificationCenter.default.publisher(for: .VTConferenceDestroyed)
+    
     
     var body: some View {
         List {
@@ -20,18 +24,24 @@ struct PeopleView: View {
                     Image(systemName: "message").onTapGesture {
                         self.tag = i
                     }
-                    Image(systemName: "video").onTapGesture {
-                        let options = VTConferenceOptions()
-                        options.alias = [self.account.user!, self.users[i]].sorted().joined(separator: "-")
-                        
-                        VoxeetSDK.shared.conference.create(options: options, success: { conference in
-                            let joinOptions = VTJoinOptions()
-                            joinOptions.constraints.video = false
-                            VoxeetSDK.shared.conference.join(conference: conference, options: joinOptions, success: { conference in
+                    Image(systemName: "video")
+                        .foregroundColor(self.videoIconColor(self.users[i]))
+                        .onTapGesture {
+                            let options = VTConferenceOptions()
+                            let alias =  [self.account.user!, self.users[i]].sorted().joined(separator: "-")
+                            options.alias = alias
+                            
+                            VoxeetSDK.shared.conference.create(options: options, success: { conference in
+                                self.account.startCall(self.users[i], conference.id)
+                                
+                                let joinOptions = VTJoinOptions()
+                                
+                                VoxeetSDK.shared.conference.join(conference: conference, options: joinOptions, success: { conference in
+                                    
+                                }, fail: { error in print(error)
+                                })
                             }, fail: { error in print(error)
                             })
-                        }, fail: { error in print(error)
-                        })
                     }
                     Image(systemName: "plus.circle").onTapGesture {
                         self.account.follow(self.users[i]) {
@@ -42,17 +52,35 @@ struct PeopleView: View {
             }
         }
         .onAppear(perform: fetch)
+        .onReceive(pub) { data in
+            guard let conference =  data.userInfo!.values.first as? VTConference else {return}
+            
+            self.account.stopCall(conference.id)
+            self.fetch()
+        }
         .alert(isPresented: $showFollowedAlert) {
             Alert(title: Text("Followed"))
         }
-        
     }
     
     private func fetch() {
         account.fetchUsers { users in
             self.users = users.filter { $0 != self.account.user! }
         }
+        
+        account.fetchCalls { calls in
+            self.calls = calls
+        }
     }
+    
+    private func videoIconColor(_ user: String) -> Color {
+        if (self.calls.isEmpty) {
+            return Color.black
+        } else {
+            return Color.red
+        }
+    }
+    
 }
 
 struct PeopleView_Previews: PreviewProvider {
