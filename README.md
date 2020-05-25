@@ -1,7 +1,7 @@
 # Stream Flutter: Building a Social Network with Stream and Flutter
 ## Part 4: 1-on-1 Video Chat 
 
-In the fourth part of our series on building a social network, we'll integrate video chat. To do this, we integrate [Dolby.io](https://dolby.io)'s [Interactivity APIs](https://dolby.io/products/interactivity-apis), formally known as [Voxeet](https://www.voxeet.com/), into our application. Note the library is still named Voxeet.
+In the fourth part of our series on building a social network, we'll integrate video chat. To do this, we integrate [Dolby.io](https://dolby.io)'s [Interactivity APIs](https://dolby.io/products/interactivity-apis), formally known as [Voxeet](https://www.voxeet.com/), into our application. Note: the library is still named Voxeet.
 
 For this part, the application will support 1-on-1 private chat. Since Dolby is a pure client-side library, we only configure our `ios` application. However, to facilitate the UI for indicating whether a user has a call waiting, we use a few endpoints in the backend. Because these are minor and largely stub implementations we don't go into them in this tutorial. Please refer to the source if you're curious. Also, ensure the backend is running if following along with this tutorial. Refer to the `backend`'s README for help.
 
