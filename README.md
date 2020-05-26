@@ -3,7 +3,7 @@
 
 In the fourth part of our series on building a social network, we'll integrate video chat. To do this, we integrate [Dolby.io](https://dolby.io)'s [Interactivity APIs](https://dolby.io/products/interactivity-apis), formally known as [Voxeet](https://www.voxeet.com/), into our application. Note: the library is still named Voxeet.
 
-For this part, the application will support 1-on-1 private chat. Since Dolby is a pure client-side library, we only configure our `ios` application. However, to facilitate the UI for indicating whether a user has a call waiting, we use a few endpoints in the backend. Because these are minor and largely stub implementations we don't go into them in this tutorial. Please refer to the source if you're curious. Also, ensure the backend is running if following along with this tutorial. Refer to the `backend`'s README for help.
+For this part, the application will support 1-on-1 private chat. Since Dolby is a pure client-side library, we only it configure our `ios` application. However, to facilitate the UI for indicating whether a user has a call waiting, we use a few endpoints in the backend. Because these are minor and largely stub implementations we don't go into them in this tutorial. Please refer to the source if you're curious. Also, ensure the backend is running if following along with this tutorial. Refer to the `backend`'s README for help.
 
 The app performs these steps:
 
@@ -11,9 +11,9 @@ The app performs these steps:
 * When a user navigates to the "People" screen show a video icon next to a user's name.
 * When a user clicks this icon, start and join a Voxeet conference with a unique alias. The user waits for the other party to join. The application informs the backend of the new call.
 * When the other user joins following the previous steps, they'll be placed in a 1-on-1 conference. 
-* When either user leaves, the call is ended in the application and the backend is informed of the call ending.
+* When either user leaves, the call is ended in the application. The backend is informed of the call ending.
 
-Voxeet's [UXKit](https://github.com/voxeet/voxeet-uxkit-ios) takes care of the connection and presentation for this 1-on-1 call. Our application just needs to create and join the call at the appropriate time.
+Voxeet's [UXKit](https://github.com/voxeet/voxeet-uxkit-ios) takes care of the connection and presentation for this 1-on-1 call. Our application just needs to create and join the call and the UXKit will overlay the video call UI.
 
 Let's dive in.
 
@@ -23,7 +23,7 @@ Go to [dolby.io](https://dolby.io) and create an account. Once registered, navig
 
 ![](images/dolby-applications.png)
 
-If you already have an app ("my first app") click into it. If you don't create an app by hitting "Add New App". Now we can grab our API key and secret for our application. The keys we need are under the "Interactivity APIs" section. :
+If you already have an app ("my first app") click into it. If you don't, create an app by hitting "Add New App". Now grab the API key and secret for our application. The keys we need are under the "Interactivity APIs" section. :
 
 ![](images/dolby-keys.png)
 
@@ -40,7 +40,7 @@ pod 'VoxeetUXKit', '~> 1.0'
 
 ### Step 2: Configure the Voxeet UXKit Library
 
-Since the Voxeet library is not tied to a `backend` user account, we can configure it on application load. Change the `AppDelegate` to this:
+Since the Voxeet library is not tied to a `backend` user account, we can configure it on application load. We do this in the `AppDelegate`:
 
 ```swift
 // ios/TheStream/AppDelegate.swift:1
@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 
-Change `<VOXEET_CONSUMER_KEY>` and `<VOXEET_CONSUMER_SECRET>` to the values you retrieved in Step 1. We configure Voxeet to not have any push notifications, turn on the speaker and video by default, and appear maximized. We also set `telecom` to true. When true, the conference will behave like a cellular call meaning when either party hangs up or declines the call (not implemented in this tutorial), it will end the call. 
+Change `<VOXEET_CONSUMER_KEY>` and `<VOXEET_CONSUMER_SECRET>` to the values you retrieved in Step 1. We configure Voxeet to not have any push notifications, turn on the speaker and video by default, and appear maximized. We also set `telecom` to true. When this is set, the conference will behave like a cellular call meaning when either party hangs up or declines the call (decline not implemented in this tutorial), it will end the call. 
 
 If you'd like to use push notifications to notify a user when a call is incoming, check out [CallKit](https://developer.apple.com/documentation/callkit) combined with `VoxeetSDK.shared.notification.push.type = .callKit`. This is out of scope for this tutorial.
 
@@ -132,9 +132,9 @@ private func startConferenceCall(_ otherUser: String) {
 }
 ```
 
-*Note: We use Voxeet's conference implementation as it's perfect to facilitate a video chat between two people. The conference object is more powerful than this (multiple users, broadcast streams, screen sharing, etc.) but here only use it for a 1-on-1 call. The terms conference and call are used interchangeably in this tutorial given the scope of our application.*
-
 Here we create our conference call using Voxeet with an `alias`. We use this `alias` as an identifier so the other user's application knows how to join the same call. The call to `.create` yields us a conference object. First we call to our `backend` via `startCall` to register the call so the other user knows there's a call waiting. This is simply a `POST` request:
+
+*Note: We use Voxeet's conference implementation as it's perfect to facilitate a video chat between two people. The conference object is more powerful than this (multiple users, broadcast streams, screen sharing, etc.) but here only use it for a 1-on-1 call. The terms conference and call are used interchangeably in this tutorial given the scope of our application.*
 
 ```swift
 // ios/TheStream/Account.swift:118
@@ -148,14 +148,14 @@ func startCall(_ to: String, _ callId: String) {
 }
 ```
 
-Once we've notified the `backend` of the call, we join the conference we just via `.join`. Since we're using Voxeet's [UXKit](https://github.com/voxeet/voxeet-uxkit-ios) a video chat UI slides up from the bottom automatically:
+Once we've notified the `backend` of the call, we join the conference via `.join`. Since we're using Voxeet's [UXKit](https://github.com/voxeet/voxeet-uxkit-ios) a video chat UI slides up from the bottom automatically:
 
 ![](images/video-waiting.png)
 
 
 ### Step 4: Joining a Call
 
-Now that we've started a call with someone, we want the other user to see there's a call started so they can join. To keep things simple, we just turn the video icon red if there's a call active. Recall from above that we are changing the video icon color via `foregroundColor` via a call to `.videoIconColor`:
+Now that the user has started a call with someone, we want the other user to see there's a call started so they can join. To keep things simple, we just turn the video icon red if there's a call active. Recall from above that we are changing the video icon color via `foregroundColor` via a call to `.videoIconColor`:
 
 ```swift
 // ios/TheStream/PeopleView.swift:75
@@ -168,7 +168,7 @@ private func videoIconColor(_ otherUser: String) -> Color {
 }
 ```
 
-Here we'll check a `@State` var `calls` for a call from the other user. If we do find one, we color the icon red. The `calls` var gets initialized when the view appears:
+Here we'll check a `@State` var `calls` for a call from the other user. If we do find one, we color the icon red. The `calls` var gets initialized when `PeopleView` appears via `fetch`:
 
 ```swift
 // ios/TheStream/PeopleView.swift:4
@@ -223,9 +223,9 @@ If the user joins the call, the UXKit UI will change to show the call has starte
 
 ### Step 5: Leaving a Call
 
-When a user is done, they simply hang up using the end call icon. We don't need to do anything special on our side to end the call, Voxeet takes care of that. We simply need to listen to the conference call ends so we can notify the backend of the change. 
+When a user is done, they simply hang up using the end call icon. We don't need to do anything special on our side to end the call, Voxeet takes care of that. We simply need to listen for the conference call ending so we can notify the backend of the change. 
 
-*Note: In a production application you'd likely want to use Voxeet's push notifications and `CallKit` bindings, or look at binding to Dolby's Interactivity API WebSockets on the backend. While the approach below works, it is less robust than using the full Notification system built into Voxeet*
+*Note: In a production application you'd likely want to use Voxeet's push notifications and `CallKit` bindings, or look at binding Dolby's Interactivity API WebSockets to the backend. While the approach below works, it is less robust than using the full Notification system built into Dolby's Interactivity APIs*
 
 We'll bind to the notification center and listen for the conference call ending. Upon ending we'll notify the backend the call has finished:
 
