@@ -10,6 +10,6 @@ You can find each part of this series by the corresponding link below:
 - [Part 1](https://getstream.io/blog/social-network-swiftui-part-1/) - Activity Feeds
 - [Part 2](https://getstream.io/blog/social-network-swiftui-part-2/) - Direct Messaging
 - [Part 3](https://getstream.io/blog/social-network-swiftui-part-3/) - Group Channels
-- [Part 4](https://github.com/nparsons08/the-stream-swiftui/tree/4-video) - 1-on-1 Video Chat
+- [Part 4](https://getstream.io/blog/1-on-1-video-chat-swiftui-dolby/) - 1-on-1 Video Chat
 
 Happy coding!
